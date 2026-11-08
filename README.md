@@ -18,7 +18,7 @@ Each icon is a small 3D model of a generic object, lit from the upper left and d
 
 The outlines are traced with `@`, so the shapes stay readable even at icon size.
 
-<img src="docs/media/how-its-built.gif" alt="How an icon is built: a flat notepad shape, then a shaded 3D model, then the ASCII icon" width="402">
+<img src="docs/media/how-its-built.gif" alt="How an icon is built: a regular app icon, turned into characters, reduced to a 2D shape, modeled in 3D, then animated" width="402">
 
 Because they're real models, they can turn:
 
