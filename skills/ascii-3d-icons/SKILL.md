@@ -1,15 +1,32 @@
 ---
 name: ascii-3d-icons
-description: Make icons in the ASCII 3D Icons style (3D models rendered in shaded characters on keycap tiles). Covers the exact visual style, turning a flat 2D icon into a 3D model, adding motion, exporting PNG/SVG/HTML/video, and installing on Mac or iPhone. Use for any request to create, convert, animate or install icons in this style.
+description: Turn anything into an icon in the ASCII 3D Icons style (3D models rendered in shaded characters): an object, an app, a product, an idea or an existing flat icon. Covers the exact visual style, turning a 2D asset into a 3D model, adding motion, and exporting PNG, SVG, HTML or video. Use for any request to create, convert or animate icons or illustrations in this style.
 ---
 
 # ASCII 3D Icons
 
-Every icon in this set is a small 3D model, written as a signed distance function (SDF), lit from one direction and drawn with nine characters. Nothing is drawn by hand. To change an icon you change its model, and the renderer draws it. Follow this skill closely: the set only looks consistent because every icon goes through the same rules.
+Every icon in this style is a small 3D model, written as a signed distance function (SDF), lit from one direction and drawn with nine characters. Nothing is drawn by hand. To change an icon you change its model, and the renderer draws it. Follow this skill closely: icons only look like they belong together because every one goes through the same rules.
+
+The style works for any subject. Whatever someone asks for (an object, an app, a feature, a brand-free product shot, an existing flat icon, a whole set), the job is the same: find the object, model it, render it with these rules.
 
 Repository: https://github.com/leobyday/ascii-icons. Clone it if it isn't on disk and work from the clone. Needs Node 18+; PNG builds and `flatten.py` also need Python 3 with Pillow.
 
 Companion skills for design tools: `ascii-icons-figma`, `ascii-icons-paper`, `ascii-icons-pen`.
+
+---
+
+## 0. Start from what they asked for
+
+| They give you | Do this |
+| --- | --- |
+| **An idea** ("a coffee cup", "an icon for our payments feature") | Pick the most familiar physical object for it, then model it (section 2, steps 2–5). |
+| **An app or brand name** | Model what the product *does*, never its logo: a pointer for a code editor, a paper plane for messaging. |
+| **A flat icon or image** | Follow section 2 from step 1: flatten it, list its parts, turn them into depth. |
+| **A set** ("five onboarding icons") | Model each object, then review them side by side at the same angle and size; adjust proportions until they feel like one family (similar fill of the frame, similar detail count). |
+| **Motion** ("make it spin", "animate the reveal") | Section 3. |
+| **A destination** (Figma, Paper, pen.dev, a website, a phone) | Section 4, plus the matching companion skill. |
+
+Check `node src/cli.js` first: the library already has about 50 models, and reusing one beats a near-duplicate.
 
 ---
 
@@ -63,8 +80,8 @@ Scale proportionally for other sizes (corner radius ≈ 22.5% of the tile, base 
 
 ### Subjects
 
-- One **generic object** per icon: what the app is *about*, never its logo. A pointer for a code editor, headphones for music, a handset for calls.
-- Name models after the object (`handset`, `speech-bubble`), never after an app or brand. Apps are mapped to models in `install/ios/icons.tsv` and `install/macos/apps.tsv`.
+- One **generic object** per icon: what the thing is *about*, never a logo. A pointer for a code editor, headphones for music, a handset for calls.
+- Name models after the object (`handset`, `speech-bubble`), never after an app or brand. If the icons are for specific apps, map apps to models separately (the example theme does this in `install/ios/icons.tsv` and `install/macos/apps.tsv`).
 
 ### Sizes
 
@@ -74,7 +91,7 @@ Comfortable at 120 px and up, fragile below 48 px. Don't use these as small UI g
 
 ## 2. From a 2D asset to a 3D model
 
-Use this when someone gives you a flat icon, logo-free artwork or a sketch and wants it in this style. The worked example turns a flat note icon (square tile, colored top band, dotted rule, two ruled lines) into the `note-tile` model in `src/models.js`.
+Use this when someone gives you a flat icon, an illustration or a sketch and wants it in this style. For an idea with no image, start at step 2 and picture the object's simplest silhouette. The worked example turns a flat note icon (square tile, colored top band, dotted rule, two ruled lines) into the `note-tile` model in `src/models.js`.
 
 ### Step 1: Read the asset and flatten it
 
@@ -145,9 +162,9 @@ node src/cli.js note-tile --angle 2.8        # the back
 
 It passes when the object reads at a glance at rest, every distinct part has a clean `@` outline, nothing disappears when turned, and the back isn't broken. If it fails, fix the model, never the characters.
 
-### Step 6: Build and map
+### Step 6: Export
 
-Map the app in `install/macos/apps.tsv` or `install/ios/icons.tsv`, then `python3 scripts/build.py` (PNGs, SVGs, wallpapers) and `npm test`.
+Export the model in whatever format the person needs (section 4). If it belongs to the example app theme, also map it in `install/macos/apps.tsv` or `install/ios/icons.tsv` and run `python3 scripts/build.py`. Run `npm test` after changing `src/models.js`.
 
 ---
 
@@ -173,7 +190,7 @@ Update characters at about 12.5 frames per second; faster looks like flicker, sl
 
 ### The build-up sequence
 
-To show how an icon is made, in five equal steps of 2.64 s (one 13.2 s loop), every step on white with the standalone drop shadow:
+To show how any icon is made (great for case studies and launches), in five equal steps of 2.64 s (one 13.2 s loop), every step on white with the standalone drop shadow:
 
 1. **Today:** the original icon, in color (the only color in the piece).
 2. **ASCII:** the original fades while the flat ASCII resolves out of noise over it.
@@ -201,13 +218,15 @@ python3 scripts/build.py                           # all PNGs, SVGs and wallpape
 For video, render frames with the motion helpers in a browser (load `src/ascii3d.js`, `src/models.js`, `src/motion.js`), capture at 25 fps for exactly one loop, then:
 
 - **MP4** (best for social): `ffmpeg -framerate 25 -i f%04d.png -c:v libx264 -crf 18 -pix_fmt yuv420p -movflags +faststart out.mp4`
-- **GIF** (README, under 5 MB for LinkedIn): 10–12.5 fps, a palette of 64–128 colors, no dithering (`palettegen=stats_mode=diff` → `paletteuse=dither=none`).
+- **GIF** (READMEs, social posts; keep under 5 MB): 10–12.5 fps, a palette of 64–128 colors, no dithering (`palettegen=stats_mode=diff` → `paletteuse=dither=none`).
 
 Never put personal details (real locations, calendar events) in public assets; use neutral text.
 
 ---
 
-## 5. Installing
+## 5. Theming a Mac or iPhone (optional)
+
+The repo includes an example theme built with this style.
 
 - **Mac:** `install/macos/install.sh --dry-run`, then `install/macos/install.sh`. Admin password once for App Store apps; Apple's own apps in `/System/Applications` can't change. `install/macos/uninstall.sh` reverts.
 - **iPhone:** follow `install/ios/README.md`. iOS has no theme support: each icon is a Shortcut that opens its app, without badges or animation.

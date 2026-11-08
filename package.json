@@ -1,7 +1,7 @@
 {
   "name": "ascii-3d-icons",
   "version": "1.0.0",
-  "description": "App icons made from 3D models rendered in shaded ASCII characters, for macOS, iPhone and design tools.",
+  "description": "A Claude skill and renderer for turning anything into a 3D icon drawn in shaded ASCII characters.",
   "license": "MIT",
   "main": "src/ascii3d.js",
   "bin": {

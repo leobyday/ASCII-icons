@@ -1,12 +1,27 @@
 # ASCII 3D Icons
 
-App icons made from real 3D models, rendered in shaded ASCII characters on raised keycap tiles. For macOS, iPhone and your design tools.
+A Claude skill, and the small open-source renderer behind it, for turning **anything** into a 3D icon drawn in shaded ASCII characters: an app, a product, a feature, a flat icon you already have, or just an idea like "a coffee cup".
 
 [![CI](https://github.com/leobyday/ascii-icons/actions/workflows/ci.yml/badge.svg)](https://github.com/leobyday/ascii-icons/actions/workflows/ci.yml)
 
-**New here? Start with the [walkthrough](docs/walkthrough.md)**, then read the [design guide](docs/design-guide.md) for how to use the set well.
+![Preview of the style: a home screen, the nine characters, an icon forming, and an icon being built](docs/media/bento.gif)
 
-![ASCII 3D Icons: the home screen, the nine characters, an icon forming, and how the Notes icon is built](docs/media/bento.gif)
+## Make your own
+
+1. Install the skill: copy [`skills/ascii-3d-icons`](skills/ascii-3d-icons/SKILL.md) into your skills folder (Claude Code: `~/.claude/skills/`; in the Claude app, upload it as a skill). Add `ascii-icons-figma`, `-paper` or `-pen` if you design in those tools.
+2. Ask Claude for what you want:
+
+   > Make an ASCII 3D icon of a coffee cup.
+
+   > Turn this flat icon (attached) into an ASCII 3D icon and animate it spinning.
+
+   > Make a matching set of five icons for my app's onboarding: camera, map, chat, wallet, settings.
+
+   > Build these as components in my Figma file "Icons".
+
+3. Claude models the object in 3D, checks it from every side, renders it in the style, and hands you PNG, SVG, HTML or an animation, or places it straight into your design file.
+
+No Claude? Everything the skill uses is plain code you can run yourself; see [Make icons by hand](#make-icons-by-hand) and the [walkthrough](docs/walkthrough.md). The [design guide](docs/design-guide.md) covers how to use the style well.
 
 ## Every icon is a 3D model
 
@@ -37,9 +52,9 @@ Every icon can resolve out of random characters, the way an image model generate
 </td>
 <td width="50%" valign="top">
 
-### A whole home screen
+### Works as a full theme
 
-Icons, widgets, folders and wallpaper, all in the same style.
+As one example, the repo includes a complete phone and Mac theme made with it.
 
 <img src="docs/media/home-screen.gif" alt="An iPhone home screen themed with ASCII 3D Icons" width="70%">
 
@@ -47,7 +62,7 @@ Icons, widgets, folders and wallpaper, all in the same style.
 </tr>
 </table>
 
-### The full set
+### The example set
 
 ![All icons](docs/media/preview.png)
 
@@ -63,35 +78,7 @@ Icons, widgets, folders and wallpaper, all in the same style.
 | `scripts/` | The build (PNGs, SVGs, wallpapers) and `flatten.py` for turning flat icons into ASCII |
 | `test/` | Tests for the renderer and exporter |
 
-## Install on a Mac
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/leobyday/ascii-icons/main/install/macos/install.sh | bash
-```
-
-Or from a clone:
-
-```sh
-git clone https://github.com/leobyday/ascii-icons.git
-cd ascii-icons
-install/macos/install.sh --dry-run   # see what would change
-install/macos/install.sh
-```
-
-The installer changes the icon of every app in `install/macos/apps.tsv` that you have installed, sets the wallpaper (skip it with `--icons-only`), then restarts the Dock and Finder.
-
-- App Store apps such as Keynote ask for your admin password once.
-- If an app still won't change, allow Terminal in **System Settings → Privacy & Security → App Management** and run it again.
-- Apple's built-in apps (Safari, Mail, Finder…) are protected by macOS and can't be re-iconed.
-- App updates sometimes restore the original icon; run the installer again.
-
-To undo everything: `install/macos/uninstall.sh`.
-
-## Install on iPhone
-
-iOS doesn't allow icon themes, so each icon is added as a Shortcut that opens the app. See [install/ios/README.md](install/ios/README.md).
-
-## Make your own icons
+## Make icons by hand
 
 You need Node 18+. For the PNGs you also need Python 3 with Pillow (`pip3 install pillow`).
 
@@ -132,7 +119,7 @@ python3 scripts/flatten.py icon.png   # the flat icon as ASCII, to see which par
 
 Model those parts in `src/models.js`, then animate with `src/motion.js`: `sway`, a full `spin`, and `reveal` (resolving out of noise), all built to loop without a seam. The [skill](skills/ascii-3d-icons/SKILL.md) walks through the whole process with a worked example.
 
-## Use with Claude
+## The skills
 
 The `skills/` folder has four skills:
 
@@ -144,6 +131,38 @@ The `skills/` folder has four skills:
 | [`ascii-icons-pen`](skills/ascii-icons-pen/SKILL.md) | Creates icons in pen.dev documents |
 
 Copy the ones you want into your skills folder (for Claude Code: `~/.claude/skills/`), connect your design tool's MCP server, and ask, for example: *"Make an ASCII 3D icon for Notion in my Figma file."*
+
+## Theme your Mac or iPhone
+
+The repo ships a ready-made theme as an example of the style in use: icons for 16 iPhone and 33 Mac apps, plus wallpapers.
+
+### Mac
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/leobyday/ascii-icons/main/install/macos/install.sh | bash
+```
+
+Or from a clone:
+
+```sh
+git clone https://github.com/leobyday/ascii-icons.git
+cd ascii-icons
+install/macos/install.sh --dry-run   # see what would change
+install/macos/install.sh
+```
+
+The installer changes the icon of every app in `install/macos/apps.tsv` that you have installed, sets the wallpaper (skip it with `--icons-only`), then restarts the Dock and Finder.
+
+- App Store apps such as Keynote ask for your admin password once.
+- If an app still won't change, allow Terminal in **System Settings → Privacy & Security → App Management** and run it again.
+- Apple's built-in apps (Safari, Mail, Finder…) are protected by macOS and can't be re-iconed.
+- App updates sometimes restore the original icon; run the installer again.
+
+To undo everything: `install/macos/uninstall.sh`.
+
+### iPhone
+
+iOS doesn't allow icon themes, so each icon is added as a Shortcut that opens the app. See [install/ios/README.md](install/ios/README.md).
 
 ## Contributing
 
