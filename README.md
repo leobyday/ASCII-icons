@@ -1,15 +1,32 @@
 # ASCII 3D Icons
 
-A Claude skill, and the small open-source renderer behind it, for turning **anything** into a 3D icon drawn in shaded ASCII characters: an app, a product, a feature, a flat icon you already have, or just an idea like "a coffee cup".
+App icons drawn as 3D models in shaded ASCII characters, free to download, and a Claude skill to make more in the same style.
 
 [![CI](https://github.com/leobyday/ascii-icons/actions/workflows/ci.yml/badge.svg)](https://github.com/leobyday/ascii-icons/actions/workflows/ci.yml)
 
 ![Preview of the style: a home screen, the nine characters, an icon forming, and an icon being built](docs/media/bento.gif)
 
-## Make your own
+## Get the icons
 
-1. Install the skill: copy [`skills/ascii-3d-icons`](skills/ascii-3d-icons/SKILL.md) into your skills folder (Claude Code: `~/.claude/skills/`; in the Claude app, upload it as a skill). Add `ascii-icons-figma`, `-paper` or `-pen` if you design in those tools.
-2. Ask Claude for what you want:
+**[Download all icons (ZIP)](https://github.com/leobyday/ascii-icons/releases/latest/download/ascii-3d-icons.zip)**: an SVG of every model, iPhone and Mac PNGs, and wallpapers.
+
+Or take just what you need:
+
+| Folder | What's in it |
+| --- | --- |
+| [`icons/svg/`](icons/svg) | Every icon (about 50) as an SVG keycap tile. The characters stay editable text in Figma, Paper, pen.dev or a browser. |
+| [`icons/ios/`](icons/ios) | iPhone app icons, 1024 px PNG |
+| [`icons/macos/`](icons/macos) | Mac app icons, 1024 px PNG |
+| [`icons/wallpapers/`](icons/wallpapers) | Matching wallpapers for Mac and iPhone |
+
+Open any file on GitHub and click **Download raw file** to save it. Icons are MIT licensed, so use them in anything.
+
+## Make new ones with the skill
+
+Need an icon that isn't in the set, or one at a different angle, size or with motion? The skill teaches Claude the whole style, so it can make new icons that match.
+
+1. **Install the skill:** copy [`skills/ascii-3d-icons`](skills/ascii-3d-icons/SKILL.md) into your skills folder (Claude Code: `~/.claude/skills/`; in the Claude app, upload it as a skill). Designing in Figma, Paper or pen.dev? Add `ascii-icons-figma`, `-paper` or `-pen` too.
+2. **Ask for what you want:**
 
    > Make an ASCII 3D icon of a coffee cup.
 
@@ -17,11 +34,13 @@ A Claude skill, and the small open-source renderer behind it, for turning **anyt
 
    > Make a matching set of five icons for my app's onboarding: camera, map, chat, wallet, settings.
 
+   > Give me the headphones icon as a 512 px PNG and as SVG.
+
    > Build these as components in my Figma file "Icons".
 
-3. Claude models the object in 3D, checks it from every side, renders it in the style, and hands you PNG, SVG, HTML or an animation, or places it straight into your design file.
+3. Claude reuses an icon from the set when one fits. Otherwise it models the new object in 3D, checks it from every side, and gives you PNG, SVG, HTML or an animation, or places it straight into your design file.
 
-No Claude? Everything the skill uses is plain code you can run yourself; see [Make icons by hand](#make-icons-by-hand) and the [walkthrough](docs/walkthrough.md). The [design guide](docs/design-guide.md) covers how to use the style well.
+No Claude? The skill only uses plain code you can run yourself; see [Make icons by hand](#make-icons-by-hand) and the [walkthrough](docs/walkthrough.md). The [design guide](docs/design-guide.md) covers how to use the style well.
 
 ## Every icon is a 3D model
 
@@ -70,7 +89,7 @@ As one example, the repo includes a complete phone and Mac theme made with it.
 
 | Folder | Contents |
 | --- | --- |
-| `icons/` | 16 iPhone and 33 Mac icons (1024 px PNG), an SVG of every model, and wallpapers |
+| `icons/` | The icons: SVG for every model, iPhone and Mac PNGs, wallpapers |
 | `install/` | The Mac installer and uninstaller, and the iPhone setup guide |
 | `skills/` | Claude skills for making new icons, in code or in Figma, Paper and pen.dev |
 | `src/` | The renderer, the 3D model library, motion helpers and the SVG/HTML exporter |
@@ -134,7 +153,7 @@ Copy the ones you want into your skills folder (for Claude Code: `~/.claude/skil
 
 ## Theme your Mac or iPhone
 
-The repo ships a ready-made theme as an example of the style in use: icons for 16 iPhone and 33 Mac apps, plus wallpapers.
+Optional: apply the icons to your own devices. The Mac installer does it in one command; the iPhone takes a few manual steps per app.
 
 ### Mac
 

@@ -15,16 +15,19 @@ Companion skills for design tools: `ascii-icons-figma`, `ascii-icons-paper`, `as
 
 ---
 
-## 0. Start from what they asked for
+## 0. Choose a starting point
 
-| They give you | Do this |
+Match the request to a row, then follow it.
+
+| If the person wants… | Do this |
 | --- | --- |
-| **An idea** ("a coffee cup", "an icon for our payments feature") | Pick the most familiar physical object for it, then model it (section 2, steps 2–5). |
-| **An app or brand name** | Model what the product *does*, never its logo: a pointer for a code editor, a paper plane for messaging. |
-| **A flat icon or image** | Follow section 2 from step 1: flatten it, list its parts, turn them into depth. |
-| **A set** ("five onboarding icons") | Model each object, then review them side by side at the same angle and size; adjust proportions until they feel like one family (similar fill of the frame, similar detail count). |
-| **Motion** ("make it spin", "animate the reveal") | Section 3. |
-| **A destination** (Figma, Paper, pen.dev, a website, a phone) | Section 4, plus the matching companion skill. |
+| **An icon that's already in the set** | Give it to them: `icons/svg/<model>.svg`, `icons/ios/` or `icons/macos/` PNGs, or the full ZIP at https://github.com/leobyday/ascii-icons/releases/latest/download/ascii-3d-icons.zip. For another size, angle or format, export it (section 4). |
+| **A new icon from an idea** ("a coffee cup", "an icon for our payments feature") | Pick the most familiar physical object for it, then model it (section 2, steps 2–5). |
+| **An icon for an app or brand** | Model what the product *does*, never its logo: a pointer for a code editor, a paper plane for messaging. |
+| **An existing flat icon converted** | Follow section 2 from step 1: flatten it, list its parts, turn them into depth. |
+| **A matching set** ("five onboarding icons") | Model each object, then review them side by side at the same angle and size; adjust proportions until they feel like one family (similar fill of the frame, similar detail count). |
+| **Motion** ("make it spin", "show it forming") | Section 3. |
+| **Icons in a specific place** (Figma, Paper, pen.dev, a website, a phone) | Section 4, plus the matching companion skill. |
 
 Check `node src/cli.js` first: the library already has about 50 models, and reusing one beats a near-duplicate.
 
