@@ -58,9 +58,9 @@ Icons, widgets, folders and wallpaper, all in the same style.
 | `icons/` | 16 iPhone and 33 Mac icons (1024 px PNG), an SVG of every model, and wallpapers |
 | `install/` | The Mac installer and uninstaller, and the iPhone setup guide |
 | `skills/` | Claude skills for making new icons, in code or in Figma, Paper and pen.dev |
-| `src/` | The renderer, the 3D model library and the SVG/HTML exporter |
+| `src/` | The renderer, the 3D model library, motion helpers and the SVG/HTML exporter |
 | `docs/` | The [walkthrough](docs/walkthrough.md), the [design guide](docs/design-guide.md), a live demo and the README media |
-| `scripts/` | The build that renders the PNGs, SVGs and wallpapers |
+| `scripts/` | The build (PNGs, SVGs, wallpapers) and `flatten.py` for turning flat icons into ASCII |
 | `test/` | Tests for the renderer and exporter |
 
 ## Install on a Mac
@@ -123,6 +123,14 @@ console.log(toSVG(art));   // keycap icon
 ```
 
 In a browser, load `src/ascii3d.js`, `src/models.js` and `src/export.js` with `<script>` tags and use `window.ASCII3D` and `window.ASCII3DExport`.
+
+### Turn a flat icon into 3D, then animate it
+
+```sh
+python3 scripts/flatten.py icon.png   # the flat icon as ASCII, to see which parts carry the shape
+```
+
+Model those parts in `src/models.js`, then animate with `src/motion.js`: `sway`, a full `spin`, and `reveal` (resolving out of noise), all built to loop without a seam. The [skill](skills/ascii-3d-icons/SKILL.md) walks through the whole process with a worked example.
 
 ## Use with Claude
 

@@ -109,7 +109,7 @@ node src/cli.js coffee-cup            # preview (after you add it)
 node src/cli.js coffee-cup --angle 0.5
 ```
 
-1. **Model it.** Add an entry to `models` in `src/models.js`. A coffee cup, for example, is a cylinder with a ring for a handle:
+1. **Model it.** Starting from a flat icon? Run `python3 scripts/flatten.py icon.png` first to see which parts carry the shape; the [skill](../skills/ascii-3d-icons/SKILL.md#2-from-a-2d-asset-to-a-3d-model) explains how to turn them into depth. Add an entry to `models` in `src/models.js`. A coffee cup, for example, is a cylinder with a ring for a handle:
 
    ```js
    "coffee-cup": (x, y, z) =>

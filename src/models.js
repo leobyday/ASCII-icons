@@ -70,6 +70,16 @@
       return union(roundBox(x, y, z, 0.82, 0.52, 0.3, 0.12), roundBox(x + 0.36, y - 0.58, z, 0.22, 0.1, 0.22, 0.05), lens);
     },
 
+    // A square note tile: slab, dotted rule under the top band, two ruled lines.
+    // Built from a flat icon; see the "2D to 3D" walkthrough in the skill.
+    "note-tile": (x, y, z) => {
+      const tile = roundBox(x, y, z, 0.9, 0.9, 0.14, 0.24);
+      const rules = union(roundBox(x, y, z + 0.15, 0.9, 0.03, 0.03, 0.01), roundBox(x, y + 0.45, z + 0.15, 0.9, 0.03, 0.03, 0.01));
+      const dx = (((x + 0.05) % 0.1) + 0.1) % 0.1 - 0.05; // repeat a dot every 0.1 along x
+      const dots = intersect(sphere(dx, y - 0.36, z + 0.15, 0.035), abs(x) - 0.84);
+      return union(tile, rules, dots);
+    },
+
     calendar: (x, y, z) =>
       union(
         roundBox(x, y + 0.05, z, 0.68, 0.68, 0.12, 0.1),
