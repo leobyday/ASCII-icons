@@ -1,0 +1,36 @@
+name: Release
+
+# Push a version tag (git tag v1.0.0 && git push origin v1.0.0) to publish
+# ascii-3d-icons.zip, the file the README's download link points at.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Check every icon is built
+        run: npm test
+      - name: Package the icons
+        run: |
+          mkdir -p dist/ascii-3d-icons
+          cp -R icons/svg icons/ios icons/macos icons/wallpapers dist/ascii-3d-icons/
+          cp LICENSE dist/ascii-3d-icons/
+          cp scripts/release-readme.txt dist/ascii-3d-icons/README.txt
+          (cd dist && zip -rq -X ascii-3d-icons.zip ascii-3d-icons)
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/ascii-3d-icons.zip \
+            --title "$GITHUB_REF_NAME" \
+            --notes "All icons in one download: an SVG of every model, iPhone and Mac PNGs, and wallpapers. Make more with the skill in skills/ascii-3d-icons." \
+            || gh release upload "$GITHUB_REF_NAME" dist/ascii-3d-icons.zip --clobber
