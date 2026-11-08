@@ -18,7 +18,7 @@ Each icon is a small 3D model of a generic object, lit from the upper left and d
 
 The outlines are traced with `@`, so the shapes stay readable even at icon size.
 
-<img src="docs/media/how-its-built.gif" alt="How an icon is built: a regular app icon, turned into characters, reduced to a 2D shape, modeled in 3D, then animated" width="402">
+<img src="docs/media/how-its-built.gif" alt="How an icon is built: the Notes icon, turned into characters, a flat ASCII icon, a 3D model, then animated" width="402">
 
 Because they're real models, they can turn:
 
@@ -146,3 +146,5 @@ New models and app mappings are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 Code and icons: [MIT](LICENSE). The bundled JetBrains Mono font is under the [SIL Open Font License](scripts/fonts/OFL.txt).
 
 App names are used only to say which icon goes with which app. The icons are generic objects and don't reproduce any company's logo.
+
+The Notes icon in the animations is Apple's ([Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Apple_Notes_icon.svg)); Notes is a trademark of Apple Inc. It isn't included in this repository.
