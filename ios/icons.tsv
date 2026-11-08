@@ -1,0 +1,17 @@
+# App name	model (see src/models.js)
+App Store	shopping-bag
+Calendar	calendar
+Camera	camera
+Chrome	globe
+Clock	clock
+FaceTime	video-camera
+Messages	speech-bubble
+Music	music-notes
+Notes	notepad
+Phone	handset
+Photos	flower
+Reminders	checklist
+Settings	gear
+TV	tv
+Wallet	wallet
+Weather	rain-cloud

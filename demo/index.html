@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ASCII 3D Icons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap">
+<style>
+  :root {
+    --paper: #f3f2ee;
+    --ink: #141414;
+    --muted: #5e5d58;
+    --face-top: #ffffff;
+    --face-bottom: #ecebe6;
+    --bevel: #dcdbd5;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  }
+  main { max-width: 1120px; margin: 0 auto; padding: 48px 16px 64px; }
+  h1 { margin: 0; font-size: clamp(40px, 7vw, 72px); font-weight: 800; letter-spacing: -0.04em; }
+  .lede { margin: 8px 0 32px; color: var(--muted); }
+  .stage { display: flex; flex-wrap: wrap; gap: 32px; align-items: center; margin-bottom: 40px; }
+  .tile {
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(180deg, var(--face-top), var(--face-bottom));
+    border: 1.5px solid var(--ink);
+    box-shadow: inset 0 2px 0 var(--face-top), inset 0 -4px 0 var(--bevel), 0 5px 0 var(--ink);
+  }
+  .tile pre { margin: 0; font: inherit; white-space: pre; }
+  .tile.large { width: 340px; height: 340px; border-radius: 76px; border-width: 2.5px; box-shadow: inset 0 4px 0 var(--face-top), inset 0 -7px 0 var(--bevel), 0 9px 0 var(--ink); }
+  .tile.large pre { font-size: 9px; line-height: 9px; }
+  .controls { display: flex; flex-direction: column; gap: 14px; }
+  .controls h2 { margin: 0; font-size: 28px; }
+  .controls label { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 24px 16px; }
+  .grid button {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    padding: 0; border: 0; background: none; color: inherit; font: inherit; font-size: 11px; cursor: pointer;
+  }
+  .grid .tile { width: 84px; height: 84px; border-radius: 20px; }
+  .grid .tile pre { font-size: 3.6px; line-height: 3.6px; }
+  .grid button[aria-pressed="true"] .tile { outline: 2px solid var(--ink); outline-offset: 4px; }
+  .grid button:focus-visible .tile { outline: 2px dashed var(--ink); outline-offset: 4px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>ASCII 3D Icons</h1>
+  <p class="lede">Every icon is a 3D model, rendered live in characters: <code>.:-=+*#%@</code></p>
+
+  <section class="stage" aria-label="Selected model">
+    <div class="tile large"><pre id="viewer" aria-hidden="true"></pre></div>
+    <div class="controls">
+      <h2 id="model-name"></h2>
+      <label><input type="radio" name="motion" value="sway" checked> Sway</label>
+      <label><input type="radio" name="motion" value="spin"> Spin</label>
+      <label><input type="radio" name="motion" value="still"> Still</label>
+    </div>
+  </section>
+
+  <section class="grid" id="grid" aria-label="All models"></section>
+</main>
+
+<script src="../src/ascii3d.js"></script>
+<script src="../src/models.js"></script>
+<script>
+  "use strict";
+  const names = Object.keys(ASCII3D.models).sort();
+  const viewer = document.getElementById("viewer");
+  const title = document.getElementById("model-name");
+  const grid = document.getElementById("grid");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let selected = "gear";
+  let motion = reduceMotion ? "still" : "sway";
+
+  for (const name of names) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.model = name;
+    button.setAttribute("aria-pressed", String(name === selected));
+    const tile = document.createElement("span");
+    tile.className = "tile";
+    const art = document.createElement("pre");
+    art.setAttribute("aria-hidden", "true");
+    art.textContent = ASCII3D.render(name, { cols: 30, rows: 18 });
+    tile.appendChild(art);
+    const label = document.createElement("span");
+    label.textContent = name;
+    button.append(tile, label);
+    button.addEventListener("click", () => select(name));
+    grid.appendChild(button);
+  }
+
+  function select(name) {
+    selected = name;
+    title.textContent = name;
+    grid.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.model === name)));
+  }
+
+  document.querySelectorAll('input[name="motion"]').forEach((input) => {
+    input.checked = input.value === motion;
+    input.addEventListener("change", () => { motion = input.value; });
+  });
+
+  function angleAt(seconds) {
+    if (motion === "spin") return seconds * 0.9;
+    if (motion === "sway") return 0.5 * Math.sin(seconds * 1.2) - 0.2;
+    return -0.35;
+  }
+
+  const start = performance.now();
+  function tick(now) {
+    viewer.textContent = ASCII3D.render(selected, { cols: 56, rows: 34, angle: angleAt((now - start) / 1000) });
+    setTimeout(() => requestAnimationFrame(tick), 70);
+  }
+  select(selected);
+  requestAnimationFrame(tick);
+</script>
+</body>
+</html>

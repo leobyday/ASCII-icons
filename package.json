@@ -1,0 +1,34 @@
+{
+  "name": "ascii-3d-icons",
+  "version": "1.0.0",
+  "description": "App icons made from 3D models rendered in shaded ASCII characters, for macOS, iPhone and design tools.",
+  "license": "MIT",
+  "main": "src/ascii3d.js",
+  "bin": {
+    "ascii-3d-icons": "src/cli.js"
+  },
+  "files": [
+    "src/"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "preview": "node src/cli.js",
+    "build": "python3 scripts/build.py --gallery"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "ascii",
+    "icons",
+    "3d",
+    "sdf",
+    "macos",
+    "ios",
+    "theme"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leobyday/ascii-icons.git"
+  }
+}

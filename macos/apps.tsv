@@ -1,0 +1,34 @@
+# App name exactly as in /Applications (without .app)	model (see src/models.js)
+ApowerMirror	screen-mirror
+Arcade	joystick
+CapCut	scissors
+Cavalry	bouncing-balls
+Claude	sparkle
+Cursor	pointer
+Discord	gamepad
+Docker	containers
+Figma	shapes
+Firefox	planet
+Framer	layers
+GitHub Desktop	git-branch
+Google Chrome	globe
+iMovie	clapperboard
+Keynote	presentation
+Loom	record-button
+Numbers	bar-chart
+Ollama	chip
+Paper	paper-stack
+Pen	pencil
+Play	play
+Rive	keyframe
+Rivet	rivet
+Rotato	phone-mockup
+Screen Studio	screen-record
+Slack	hash
+Spotify	headphones
+Switch Console	handheld-console
+Symmetry	butterfly
+Telegram	paper-plane
+Visual Studio Code	code-brackets
+Wispr Flow	microphone
+zoom.us	video-camera
