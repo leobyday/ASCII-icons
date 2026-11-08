@@ -5,7 +5,7 @@ Examples:
     python3 scripts/build.py                  # everything (PNGs, SVGs, wallpapers)
     python3 scripts/build.py --set macos      # just the Mac icons
     python3 scripts/build.py --only Slack     # one app
-    python3 scripts/build.py --gallery        # also write assets/preview.png
+    python3 scripts/build.py --gallery        # also write docs/media/preview.png
 
 Needs Node 18+ (to run the renderer) and Pillow (pip3 install pillow).
 """
@@ -23,8 +23,8 @@ from pathlib import Path
 from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
-FONT = ROOT / "fonts" / "JetBrainsMono-Bold.ttf"
-MANIFESTS = {"ios": ROOT / "ios" / "icons.tsv", "macos": ROOT / "macos" / "apps.tsv"}
+FONT = ROOT / "scripts" / "fonts" / "JetBrainsMono-Bold.ttf"
+MANIFESTS = {"ios": ROOT / "install" / "ios" / "icons.tsv", "macos": ROOT / "install" / "macos" / "apps.tsv"}
 
 INK = (20, 20, 20)
 PAPER = (243, 242, 238)
@@ -159,7 +159,7 @@ def main() -> int:
     parser.add_argument("--set", choices=sorted(MANIFESTS), action="append", help="icon set to build (default: all)")
     parser.add_argument("--only", action="append", metavar="APP", help="build only these apps")
     parser.add_argument("--no-wallpaper", action="store_true", help="skip the wallpapers")
-    parser.add_argument("--gallery", action="store_true", help="write assets/preview.png")
+    parser.add_argument("--gallery", action="store_true", help="write docs/media/preview.png")
     args = parser.parse_args()
 
     sets = args.set or sorted(MANIFESTS)
@@ -190,13 +190,13 @@ def main() -> int:
     if not args.only and not args.no_wallpaper:
         for icon_set in sets:
             width, height = WALLPAPERS[icon_set]
-            out = ROOT / "wallpapers" / f"{icon_set}.png"
+            out = ROOT / "icons" / "wallpapers" / f"{icon_set}.png"
             out.parent.mkdir(parents=True, exist_ok=True)
             draw_wallpaper(out, width, height)
             print(f"wallpaper  {out.relative_to(ROOT)}")
 
     if args.gallery:
-        out = ROOT / "assets" / "preview.png"
+        out = ROOT / "docs" / "media" / "preview.png"
         out.parent.mkdir(parents=True, exist_ok=True)
         unique = {}
         for icon_set in sorted(MANIFESTS):

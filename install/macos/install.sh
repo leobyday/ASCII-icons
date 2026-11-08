@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # ASCII 3D Icons for macOS: swaps app icons and sets the wallpaper.
 #
-#   macos/install.sh                 apply icons + wallpaper
-#   macos/install.sh --icons-only    leave the wallpaper alone
-#   macos/install.sh --dry-run       list what would change
+#   install/macos/install.sh                 apply icons + wallpaper
+#   install/macos/install.sh --icons-only    leave the wallpaper alone
+#   install/macos/install.sh --dry-run       list what would change
 #
 # Or straight from GitHub:
-#   curl -fsSL https://raw.githubusercontent.com/leobyday/ascii-icons/main/macos/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/leobyday/ascii-icons/main/install/macos/install.sh | bash
 set -euo pipefail
 
 REPO_URL="${ASCII3D_REPO:-https://github.com/leobyday/ascii-icons.git}"
@@ -29,9 +29,9 @@ usage() {
   cat <<'EOF'
 ASCII 3D Icons for macOS: swaps app icons and sets the wallpaper.
 
-  macos/install.sh                 apply icons + wallpaper
-  macos/install.sh --icons-only    leave the wallpaper alone
-  macos/install.sh --dry-run       list what would change
+  install/macos/install.sh                 apply icons + wallpaper
+  install/macos/install.sh --icons-only    leave the wallpaper alone
+  install/macos/install.sh --dry-run       list what would change
 EOF
 }
 say() { printf '%s\n' "$*"; }
@@ -55,7 +55,7 @@ locate_repo() {
   local here
   here="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd || true)"
   if [ -n "$here" ] && [ -f "$here/apps.tsv" ]; then
-    dirname "$here"
+    (cd "$here/../.." && pwd)
     return
   fi
   command -v git >/dev/null || die "git is required (run: xcode-select --install)"
@@ -101,7 +101,7 @@ main() {
     else
       failed+=("$name")
     fi
-  done <"$repo/macos/apps.tsv"
+  done <"$repo/install/macos/apps.tsv"
 
   # Apps owned by root (App Store apps, some installers) need admin rights.
   if [ "${#failed[@]}" -gt 0 ] && [ "$dry_run" = 0 ]; then
@@ -123,7 +123,7 @@ main() {
   fi
 
   if [ "$set_wallpaper" = 1 ]; then
-    local wallpaper="$repo/wallpapers/macos.png"
+    local wallpaper="$repo/icons/wallpapers/macos.png"
     if [ "$dry_run" = 1 ]; then
       say "  would set    wallpaper"
     else
@@ -151,7 +151,7 @@ main() {
     say "Allow Terminal in System Settings > Privacy & Security > App Management, then run this again."
   fi
   say "App updates can restore an original icon; just run this again."
-  say "Undo everything with: $repo/macos/uninstall.sh"
+  say "Undo everything with: $repo/install/macos/uninstall.sh"
 }
 
 main "$@"

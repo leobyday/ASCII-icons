@@ -3,7 +3,7 @@
  *
  * Each model is an SDF of a generic object, roughly filling the cube
  * -1..1 on every axis. Models are named after what they depict, never after
- * a brand; apps are mapped to models in ios/icons.tsv and macos/apps.tsv.
+ * a brand; apps are mapped to models in install/ios/icons.tsv and install/macos/apps.tsv.
  */
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory(require("./ascii3d"));

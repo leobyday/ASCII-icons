@@ -4,9 +4,9 @@ App icons made from real 3D models, rendered in shaded ASCII characters on raise
 
 [![CI](https://github.com/leobyday/ascii-icons/actions/workflows/ci.yml/badge.svg)](https://github.com/leobyday/ascii-icons/actions/workflows/ci.yml)
 
-**New here? Start with the [walkthrough](docs/walkthrough.md).**
+**New here? Start with the [walkthrough](docs/walkthrough.md)**, then read the [design guide](docs/design-guide.md) for how to use the set well.
 
-![ASCII 3D Icons: the characters, an icon forming, the folder, the installer and the home screen](assets/thumbnail.gif)
+![ASCII 3D Icons: the characters, an icon forming, the folder, the installer and the home screen](docs/media/thumbnail.gif)
 
 ## Every icon is a 3D model
 
@@ -18,7 +18,7 @@ Each icon is a small 3D model of a generic object, lit from the upper left and d
 
 The outlines are traced with `@`, so the shapes stay readable even at icon size. Because they're real models, they can turn:
 
-![The iPhone icons swaying in 3D](assets/icons.gif)
+![The iPhone icons swaying in 3D](docs/media/icons.gif)
 
 <table>
 <tr>
@@ -28,7 +28,7 @@ The outlines are traced with `@`, so the shapes stay readable even at icon size.
 
 Every icon can resolve out of random characters, the way an image model generates a picture.
 
-<img src="assets/generate.gif" alt="An icon forming out of character noise" width="100%">
+<img src="docs/media/generate.gif" alt="An icon forming out of character noise" width="100%">
 
 </td>
 <td width="50%" valign="top">
@@ -37,7 +37,7 @@ Every icon can resolve out of random characters, the way an image model generate
 
 Icons, widgets, folders and wallpaper, all in the same style.
 
-<img src="assets/home-screen.gif" alt="An iPhone home screen themed with ASCII 3D Icons" width="70%">
+<img src="docs/media/home-screen.gif" alt="An iPhone home screen themed with ASCII 3D Icons" width="70%">
 
 </td>
 </tr>
@@ -45,27 +45,24 @@ Icons, widgets, folders and wallpaper, all in the same style.
 
 ### The full set
 
-![All icons](assets/preview.png)
+![All icons](docs/media/preview.png)
 
 ## What's inside
 
 | Folder | Contents |
 | --- | --- |
-| `icons/macos/` | 33 icons for Mac apps (1024 px PNG) |
-| `icons/ios/` | 16 icons for iPhone apps (1024 px PNG) |
-| `icons/svg/` | Every model as an SVG icon with editable text, for Figma, Paper and pen.dev |
-| `wallpapers/` | Matching wallpapers for Mac (`macos.png`) and iPhone (`ios.png`) |
-| `macos/` | One-command installer and uninstaller |
-| `ios/` | Step-by-step iPhone setup |
+| `icons/` | 16 iPhone and 33 Mac icons (1024 px PNG), an SVG of every model, and wallpapers |
+| `install/` | The Mac installer and uninstaller, and the iPhone setup guide |
 | `skills/` | Claude skills for making new icons, in code or in Figma, Paper and pen.dev |
 | `src/` | The renderer, the 3D model library and the SVG/HTML exporter |
-| `demo/` | A live, rotating gallery of every model |
-| `docs/` | The [walkthrough](docs/walkthrough.md) |
+| `docs/` | The [walkthrough](docs/walkthrough.md), the [design guide](docs/design-guide.md), a live demo and the README media |
+| `scripts/` | The build that renders the PNGs, SVGs and wallpapers |
+| `test/` | Tests for the renderer and exporter |
 
 ## Install on a Mac
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/leobyday/ascii-icons/main/macos/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/leobyday/ascii-icons/main/install/macos/install.sh | bash
 ```
 
 Or from a clone:
@@ -73,22 +70,22 @@ Or from a clone:
 ```sh
 git clone https://github.com/leobyday/ascii-icons.git
 cd ascii-icons
-macos/install.sh --dry-run   # see what would change
-macos/install.sh
+install/macos/install.sh --dry-run   # see what would change
+install/macos/install.sh
 ```
 
-The installer changes the icon of every app in `macos/apps.tsv` that you have installed, sets the wallpaper (skip it with `--icons-only`), then restarts the Dock and Finder.
+The installer changes the icon of every app in `install/macos/apps.tsv` that you have installed, sets the wallpaper (skip it with `--icons-only`), then restarts the Dock and Finder.
 
 - App Store apps such as Keynote ask for your admin password once.
 - If an app still won't change, allow Terminal in **System Settings → Privacy & Security → App Management** and run it again.
 - Apple's built-in apps (Safari, Mail, Finder…) are protected by macOS and can't be re-iconed.
 - App updates sometimes restore the original icon; run the installer again.
 
-To undo everything: `macos/uninstall.sh`.
+To undo everything: `install/macos/uninstall.sh`.
 
 ## Install on iPhone
 
-iOS doesn't allow icon themes, so each icon is added as a Shortcut that opens the app. See [ios/README.md](ios/README.md).
+iOS doesn't allow icon themes, so each icon is added as a Shortcut that opens the app. See [install/ios/README.md](install/ios/README.md).
 
 ## Make your own icons
 
@@ -104,10 +101,10 @@ node src/cli.js gear --format html           # a keycap tile as HTML
 To add an app:
 
 1. Pick a model from the list, or write a new one in `src/models.js`. The [walkthrough](docs/walkthrough.md#6-make-new-icons-by-hand) shows an example.
-2. Add a line to `macos/apps.tsv` or `ios/icons.tsv`: the app name, a tab, then the model name.
+2. Add a line to `install/macos/apps.tsv` or `install/ios/icons.tsv`: the app name, a tab, then the model name.
 3. Run `python3 scripts/build.py`, then `npm test`.
 
-Open `demo/index.html` in a browser to see every model rotating.
+Open `docs/demo/index.html` in a browser to see every model rotating.
 
 ### Use the renderer in your own project
 
@@ -142,6 +139,6 @@ New models and app mappings are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-Code and icons: [MIT](LICENSE). The bundled JetBrains Mono font is under the [SIL Open Font License](fonts/OFL.txt).
+Code and icons: [MIT](LICENSE). The bundled JetBrains Mono font is under the [SIL Open Font License](scripts/fonts/OFL.txt).
 
 App names are used only to say which icon goes with which app. The icons are generic objects and don't reproduce any company's logo.

@@ -2,7 +2,7 @@
 # Restores the original app icons and the previous wallpaper.
 set -euo pipefail
 
-REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 STATE_DIR="$HOME/Library/Application Support/ascii-3d-icons"
 APPS_DIR="/Applications"
 
@@ -33,7 +33,7 @@ main() {
     else
       needs_sudo+=("$name")
     fi
-  done <"$REPO/macos/apps.tsv"
+  done <"$REPO/install/macos/apps.tsv"
 
   if [ "${#needs_sudo[@]}" -gt 0 ] && sudo -v; then
     for name in "${needs_sudo[@]}"; do

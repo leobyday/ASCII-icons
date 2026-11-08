@@ -53,7 +53,7 @@ test("unknown models throw", () => {
 });
 
 test("every manifest entry points at a real model", () => {
-  for (const file of ["ios/icons.tsv", "macos/apps.tsv"]) {
+  for (const file of ["install/ios/icons.tsv", "install/macos/apps.tsv"]) {
     for (const [app, model] of manifest(file)) {
       assert.ok(model in ASCII3D.models, `${file}: ${app} -> ${model}`);
     }
@@ -62,7 +62,7 @@ test("every manifest entry points at a real model", () => {
 
 test("every manifest entry has a built icon", () => {
   const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-  for (const [file, dir] of [["ios/icons.tsv", "icons/ios"], ["macos/apps.tsv", "icons/macos"]]) {
+  for (const [file, dir] of [["install/ios/icons.tsv", "icons/ios"], ["install/macos/apps.tsv", "icons/macos"]]) {
     for (const [app] of manifest(file)) {
       assert.ok(fs.existsSync(path.join(ROOT, dir, `${slug(app)}.png`)), `${dir}: missing ${app}`);
     }

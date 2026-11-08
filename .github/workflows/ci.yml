@@ -27,4 +27,4 @@ jobs:
       - name: Python
         run: ruff check scripts/ && ruff format --check scripts/
       - name: Shell
-        run: shellcheck macos/*.sh
+        run: shellcheck install/macos/*.sh

@@ -17,11 +17,11 @@ For placing icons in a design tool, use the companion skills: `ascii-icons-figma
 - `src/models.js`: the model library, named after objects (`gear`, `handset`, `speech-bubble`)
 - `src/export.js`: wraps rendered art in the keycap tile as SVG or HTML
 - `src/cli.js`: everything from the terminal (see below)
-- `ios/icons.tsv`, `macos/apps.tsv`: which app gets which model
-- `scripts/build.py`: PNGs, SVGs, wallpapers
-- `macos/install.sh`, `macos/uninstall.sh`: apply or undo the Mac theme
-- `ios/README.md`: the iPhone steps (Shortcuts)
-- `demo/index.html`: live rotating gallery
+- `install/ios/icons.tsv`, `install/macos/apps.tsv`: which app gets which model
+- `scripts/build.py`: PNGs, SVGs, wallpapers (into `icons/`)
+- `install/macos/install.sh`, `install/macos/uninstall.sh`: apply or undo the Mac theme
+- `install/ios/README.md`: the iPhone steps (Shortcuts)
+- `docs/demo/index.html`: live rotating gallery
 
 ## CLI
 
@@ -50,10 +50,10 @@ node src/cli.js --all --format svg --out out/     # one file per model
    - Build with `roundBox`, `sphere`, `ellipsoid`, `cylinderZ/Y`, `torusZ/Y`, `capsule`, `triangle` + `extrude`, `octahedron`; combine with `union`, `subtract`, `intersect`, `smoothUnion`; turn parts with `rotate`.
    - Parts thinner than about 0.05 vanish at icon size; gaps under about 0.1 close up.
 3. Preview at the default angle and at `--angle 0.5`. Iterate until it reads at a glance and every distinct part has a clean `@` outline.
-4. Map apps in `macos/apps.tsv` (exact name from `/Applications`, without `.app`) or `ios/icons.tsv`.
+4. Map apps in `install/macos/apps.tsv` (exact name from `/Applications`, without `.app`) or `install/ios/icons.tsv`.
 5. `python3 scripts/build.py --only "App Name"` for the PNG, `python3 scripts/build.py` to refresh everything, then `npm test`.
 
 ## Installing
 
-- **Mac:** `macos/install.sh --dry-run`, then `macos/install.sh`. Admin password once for App Store apps; Apple's own apps can't change. `macos/uninstall.sh` reverts.
-- **iPhone:** follow `ios/README.md`. iOS has no theme support: icons are Shortcuts that open each app, without badges and without animation.
+- **Mac:** `install/macos/install.sh --dry-run`, then `install/macos/install.sh`. Admin password once for App Store apps; Apple's own apps can't change. `install/macos/uninstall.sh` reverts.
+- **iPhone:** follow `install/ios/README.md`. iOS has no theme support: icons are Shortcuts that open each app, without badges and without animation.
