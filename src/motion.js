@@ -16,6 +16,8 @@
   const LOOP = 13.2;
   /** The resting view angle for every icon. */
   const REST_ANGLE = -0.35;
+  /** Sway centers slightly right of rest so both sides of the swing stay readable. */
+  const SWAY_CENTER = -0.2;
 
   const clamp01 = (v) => Math.max(0, Math.min(1, v));
   /** Ease in and out (smoothstep). */
@@ -33,7 +35,7 @@
    */
   function sway(t, o = {}) {
     const { amplitude = 0.5, cycles = 2, phase = 0, loop = LOOP } = o;
-    return REST_ANGLE + 0.15 + amplitude * Math.sin(t * loopFrequency(cycles, loop) + phase);
+    return SWAY_CENTER + amplitude * Math.sin(t * loopFrequency(cycles, loop) + phase);
   }
 
   /** One full turn over progress 0..1, eased, starting and ending at rest. */
@@ -64,7 +66,9 @@
           .map((ch, i) => {
             if (hash(i, j, seed) < p) return ch;
             if (ch === " ") return hash(i, j, frame + seed * 97) < (1 - p) * 0.6 ? ramp.charAt(Math.floor(hash(j, i, frame) * 6)) : " ";
-            const target = ramp.indexOf(ch), noise = Math.floor(hash(j, i, frame + 7) * ramp.length);
+            const target = ramp.indexOf(ch);
+            if (target < 0) return p < 0.5 ? ramp.charAt(Math.floor(hash(j, i, frame + 7) * ramp.length)) : ch;
+            const noise = Math.floor(hash(j, i, frame + 7) * ramp.length);
             return ramp.charAt(Math.round(noise + (target - noise) * p));
           })
           .join(""),
@@ -75,5 +79,5 @@
   /** Progress through a reveal that eases out, for u = 0..1 of its duration. */
   const revealEase = (u) => 1 - Math.pow(1 - clamp01(u), 2.2);
 
-  return { LOOP, REST_ANGLE, loopFrequency, sway, spin, reveal, revealEase, smooth, hash };
+  return { LOOP, REST_ANGLE, SWAY_CENTER, loopFrequency, sway, spin, reveal, revealEase, smooth, hash };
 });

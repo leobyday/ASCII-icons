@@ -28,3 +28,7 @@ test("reveal is deterministic for a frame", () => {
   const art = ASCII3D.render("handset");
   assert.equal(Motion.reveal(art, 0.4, { seed: 2, frame: 9 }), Motion.reveal(art, 0.4, { seed: 2, frame: 9 }));
 });
+
+test("sway centers on SWAY_CENTER", () => {
+  assert.ok(close(Motion.sway(0), Motion.SWAY_CENTER));
+});

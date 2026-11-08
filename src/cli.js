@@ -29,12 +29,17 @@ function parseArgs(argv) {
     const arg = argv[i];
     if (arg === "-h" || arg === "--help") opts.help = true;
     else if (arg === "--all") opts.all = true;
-    else if (arg === "--json") opts.format = "json"; // kept for older scripts
     else if (arg === "--format") opts.format = argv[++i];
-    else if (arg === "--out") opts.out = argv[++i];
+    else if (arg === "--out") {
+      opts.out = argv[++i];
+      if (!opts.out) throw new Error("--out needs a directory");
+    }
     else if (NUMBER_OPTIONS.includes(arg)) {
       const value = Number(argv[++i]);
-      if (Number.isNaN(value)) throw new Error(`${arg} needs a number`);
+      if (!Number.isFinite(value)) throw new Error(`${arg} needs a number`);
+      if (["--cols", "--rows", "--size"].includes(arg) && !(Number.isInteger(value) && value > 0)) {
+        throw new Error(`${arg} needs a positive whole number`);
+      }
       if (arg === "--size") opts.size = value;
       else opts.render[arg.slice(2)] = value;
     } else if (arg.startsWith("-")) throw new Error(`unknown option ${arg}`);
@@ -48,7 +53,7 @@ function parseArgs(argv) {
 /** Turn rendered art into the requested format. */
 function formatArt(name, art, opts) {
   if (opts.format === "svg") return toSVG(art, { size: opts.size, title: name });
-  if (opts.format === "html") return toHTML(art, { size: opts.size });
+  if (opts.format === "html") return toHTML(art, { size: opts.size, title: name });
   return art;
 }
 
@@ -94,15 +99,17 @@ function run(opts) {
   return 0;
 }
 
-function main() {
+function main(argv = process.argv.slice(2)) {
   let opts;
   try {
-    opts = parseArgs(process.argv.slice(2));
+    opts = parseArgs(argv);
   } catch (err) {
     console.error(`${err.message}\n${USAGE}`);
-    process.exit(2);
+    return 2;
   }
-  process.exitCode = run(opts);
+  return run(opts);
 }
 
-main();
+if (require.main === module) process.exitCode = main();
+
+module.exports = { parseArgs, main };

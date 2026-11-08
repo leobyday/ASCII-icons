@@ -68,3 +68,13 @@ test("every manifest entry has a built icon", () => {
     }
   }
 });
+
+test("invalid sizes are rejected", () => {
+  assert.throws(() => ASCII3D.render("gear", { cols: 0 }), RangeError);
+  assert.throws(() => ASCII3D.render("gear", { rows: 2.5 }), RangeError);
+  assert.throws(() => ASCII3D.render("gear", { angle: NaN }), RangeError);
+});
+
+test("register only accepts functions", () => {
+  assert.throws(() => ASCII3D.register({ broken: 3 }), TypeError);
+});

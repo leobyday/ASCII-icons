@@ -92,10 +92,11 @@ As one example, the repo includes a complete phone and Mac theme made with it.
 | `icons/` | The icons: SVG for every model, iPhone and Mac PNGs, wallpapers |
 | `install/` | The Mac installer and uninstaller, and the iPhone setup guide |
 | `skills/` | Claude skills for making new icons, in code or in Figma, Paper and pen.dev |
-| `src/` | The renderer, the 3D model library, motion helpers and the SVG/HTML exporter |
+| `src/` | The renderer, the 3D model library, motion helpers, the SVG/HTML exporter and the CLI. No dependencies. |
+| `types/` | TypeScript declarations for everything in `src/` |
 | `docs/` | The [walkthrough](docs/walkthrough.md), the [design guide](docs/design-guide.md), a live demo and the README media |
 | `scripts/` | The build (PNGs, SVGs, wallpapers) and `flatten.py` for turning flat icons into ASCII |
-| `test/` | Tests for the renderer and exporter |
+| `test/` | Tests for the renderer, exporter, motion helpers and CLI |
 
 ## Make icons by hand
 
@@ -128,7 +129,7 @@ console.log(art);          // text
 console.log(toSVG(art));   // keycap icon
 ```
 
-In a browser, load `src/ascii3d.js`, `src/models.js` and `src/export.js` with `<script>` tags and use `window.ASCII3D` and `window.ASCII3DExport`.
+In a browser, load `src/ascii3d.js`, `src/models.js`, `src/export.js` and `src/motion.js` with `<script>` tags and use `window.ASCII3D`, `window.ASCII3DExport` and `window.ASCII3DMotion`. Exported SVGs can sit inline on the same page: element ids are namespaced per icon, and every tile is labeled for screen readers (pass `title`).
 
 ### Turn a flat icon into 3D, then animate it
 

@@ -141,7 +141,10 @@
 
   /** Add models: an object of name -> SDF function. */
   function register(newModels) {
-    Object.assign(models, newModels);
+    for (const [name, field] of Object.entries(newModels)) {
+      if (typeof field !== "function") throw new TypeError(`Model "${name}" must be an SDF function`);
+      models[name] = field;
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -201,6 +204,12 @@
     const field = typeof model === "function" ? model : models[model];
     if (!field) throw new Error(`Unknown model "${model}"`);
     const { cols = 50, rows = 30, angle = -0.35, tilt = 0.22, cellAspect = 0.6 } = options;
+    for (const [key, value] of [["cols", cols], ["rows", rows]]) {
+      if (!Number.isInteger(value) || value < 1) throw new RangeError(`${key} must be a positive integer, got ${value}`);
+    }
+    for (const [key, value] of [["angle", angle], ["tilt", tilt], ["cellAspect", cellAspect]]) {
+      if (!Number.isFinite(value)) throw new RangeError(`${key} must be a finite number, got ${value}`);
+    }
     const oriented = orient(field, angle, tilt);
     const aspect = (cols * cellAspect) / rows;
 

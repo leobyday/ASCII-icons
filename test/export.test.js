@@ -14,7 +14,7 @@ const art = ASCII3D.render("gear");
 test("SVG export is a complete keycap icon with text runs", () => {
   const svg = toSVG(art, { title: "gear" });
   assert.match(svg, /^<svg [^>]*viewBox="0 0 1024 1024"/);
-  assert.match(svg, /<title>gear<\/title>/);
+  assert.match(svg, /<title id="[^"]+">gear<\/title>/);
   assert.match(svg, /<\/svg>$/);
   const runs = svg.match(/<text /g) || [];
   const expected = art.split("\n").reduce((n, line) => n + (line.match(/\S+/g) || []).length, 0);
@@ -27,7 +27,7 @@ test("SVG export scales with size", () => {
 
 test("HTML export keeps the art verbatim", () => {
   const html = toHTML(art, { size: 120 });
-  assert.match(html, /^<div style="width:120px;height:120px;/);
+  assert.match(html, /^<div role="img" aria-label="[^"]*" style="width:120px;height:120px;/);
   assert.ok(html.includes(art), "art should appear unchanged inside <pre>");
 });
 
@@ -41,4 +41,16 @@ test("every model has a built SVG", () => {
   for (const name of Object.keys(ASCII3D.models)) {
     assert.ok(fs.existsSync(path.join(dir, `${name}.svg`)), `missing icons/svg/${name}.svg`);
   }
+});
+
+test("several SVGs can share a page without id clashes", () => {
+  const ids = (svg) => [...svg.matchAll(/ id="([^"]+)"/g)].map((m) => m[1]);
+  const a = ids(toSVG(art, { title: "gear" }));
+  const b = ids(toSVG(art, { title: "globe" }));
+  assert.ok(a.length >= 3);
+  assert.equal(a.filter((id) => b.includes(id)).length, 0);
+});
+
+test("HTML tiles are labeled for assistive tech", () => {
+  assert.match(toHTML(art, { title: "gear" }), /^<div role="img" aria-label="gear"/);
 });

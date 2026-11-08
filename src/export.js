@@ -38,18 +38,22 @@
     return Math.min(byWidth, byHeight);
   }
 
+  /** A stable, document-safe id prefix, so several icons can sit inline on one page. */
+  const idPrefix = (title, size) => `a3d-${String(title).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "icon"}-${size}`;
+
   const round = (n) => Math.round(n * 100) / 100;
-  const escapeXml = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const escapeXml = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
   /**
    * Wrap ASCII art in the keycap tile as an SVG document.
    * @param {string} art  Output of ASCII3D.render.
    * @param {object} [options]
    * @param {number} [options.size=1024]  Width and height in px.
-   * @param {string} [options.title]  Accessible title.
+   * @param {string} [options.title]  Accessible title; also seeds the element ids.
    */
   function toSVG(art, options = {}) {
     const { size = 1024, title = "ASCII 3D icon" } = options;
+    const id = idPrefix(title, size);
     const g = tileGeometry(size);
     const lines = art.split("\n");
     const fontSize = fitFontSize(lines, g);
@@ -69,16 +73,16 @@
 
     const inner = { x: g.x + g.border, y: g.y + g.border, w: g.w - 2 * g.border, h: g.h - 2 * g.border, r: g.radius - g.border };
     return [
-      `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img">`,
-      `<title>${escapeXml(title)}</title>`,
+      `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-labelledby="${id}-title">`,
+      `<title id="${id}-title">${escapeXml(title)}</title>`,
       "<defs>",
-      `<linearGradient id="face" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${COLORS.faceTop}"/><stop offset="1" stop-color="${COLORS.faceBottom}"/></linearGradient>`,
-      `<clipPath id="face-clip"><rect x="${round(inner.x)}" y="${round(inner.y)}" width="${round(inner.w)}" height="${round(inner.h)}" rx="${round(inner.r)}"/></clipPath>`,
+      `<linearGradient id="${id}-face" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${COLORS.faceTop}"/><stop offset="1" stop-color="${COLORS.faceBottom}"/></linearGradient>`,
+      `<clipPath id="${id}-clip"><rect x="${round(inner.x)}" y="${round(inner.y)}" width="${round(inner.w)}" height="${round(inner.h)}" rx="${round(inner.r)}"/></clipPath>`,
       "</defs>",
       `<rect x="${round(g.x)}" y="${round(g.y + g.depth)}" width="${round(g.w)}" height="${round(g.h)}" rx="${round(g.radius)}" fill="${COLORS.ink}"/>`,
       `<rect x="${round(g.x)}" y="${round(g.y)}" width="${round(g.w)}" height="${round(g.h)}" rx="${round(g.radius)}" fill="${COLORS.ink}"/>`,
-      `<rect x="${round(inner.x)}" y="${round(inner.y)}" width="${round(inner.w)}" height="${round(inner.h)}" rx="${round(inner.r)}" fill="url(#face)"/>`,
-      `<rect x="${round(inner.x)}" y="${round(inner.y + inner.h - g.bevel)}" width="${round(inner.w)}" height="${round(g.bevel)}" fill="${COLORS.bevel}" clip-path="url(#face-clip)"/>`,
+      `<rect x="${round(inner.x)}" y="${round(inner.y)}" width="${round(inner.w)}" height="${round(inner.h)}" rx="${round(inner.r)}" fill="url(#${id}-face)"/>`,
+      `<rect x="${round(inner.x)}" y="${round(inner.y + inner.h - g.bevel)}" width="${round(inner.w)}" height="${round(g.bevel)}" fill="${COLORS.bevel}" clip-path="url(#${id}-clip)"/>`,
       `<g font-family="${FONT_FAMILY}" font-weight="700" font-size="${round(fontSize)}" fill="${COLORS.ink}">`,
       ...runs,
       "</g>",
@@ -91,9 +95,10 @@
    * @param {string} art  Output of ASCII3D.render.
    * @param {object} [options]
    * @param {number} [options.size=180]  Tile width and height in px.
+   * @param {string} [options.title]  Accessible label for the tile.
    */
   function toHTML(art, options = {}) {
-    const { size = 180 } = options;
+    const { size = 180, title = "ASCII 3D icon" } = options;
     const lines = art.split("\n");
     const border = Math.max(1.5, round(size * 0.014));
     const face = size - 2 * border;
@@ -107,10 +112,10 @@
     ].join(";");
     const pre = [
       "margin:0", "white-space:pre", `color:${COLORS.ink}`,
-      `font-family:${FONT_FAMILY.replace(/'/g, "")}`, "font-weight:700",
+      `font-family:${FONT_FAMILY}`, "font-weight:700",
       `font-size:${fontSize}px`, `line-height:${fontSize}px`,
     ].join(";");
-    return `<div style="${tile}"><pre aria-hidden="true" style="${pre}">${escapeXml(art)}</pre></div>`;
+    return `<div role="img" aria-label="${escapeXml(title)}" style="${tile}"><pre aria-hidden="true" style="${pre}">${escapeXml(art)}</pre></div>`;
   }
 
   return { toSVG, toHTML };

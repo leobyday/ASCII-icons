@@ -4,16 +4,38 @@
   "description": "A Claude skill and renderer for turning anything into a 3D icon drawn in shaded ASCII characters.",
   "license": "MIT",
   "main": "src/ascii3d.js",
+  "types": "types/ascii3d.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/ascii3d.d.ts",
+      "default": "./src/ascii3d.js"
+    },
+    "./models": {
+      "types": "./types/models.d.ts",
+      "default": "./src/models.js"
+    },
+    "./export": {
+      "types": "./types/export.d.ts",
+      "default": "./src/export.js"
+    },
+    "./motion": {
+      "types": "./types/motion.d.ts",
+      "default": "./src/motion.js"
+    },
+    "./package.json": "./package.json"
+  },
   "bin": {
     "ascii-3d-icons": "src/cli.js"
   },
   "files": [
-    "src/"
+    "src/",
+    "types/"
   ],
   "scripts": {
     "test": "node --test test/*.test.js",
     "preview": "node src/cli.js",
-    "build": "python3 scripts/build.py --gallery"
+    "build": "python3 scripts/build.py --gallery",
+    "check": "node --check src/*.js && npm test"
   },
   "engines": {
     "node": ">=18"

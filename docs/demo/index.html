@@ -37,6 +37,8 @@
   .tile.large pre { font-size: 9px; line-height: 9px; }
   .controls { display: flex; flex-direction: column; gap: 14px; }
   .controls h2 { margin: 0; font-size: 28px; }
+  .controls fieldset { display: flex; flex-direction: column; gap: 14px; margin: 0; padding: 0; border: 0; }
+  .controls legend { padding: 0; margin-bottom: 4px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
   .controls label { display: flex; align-items: center; gap: 10px; font-size: 14px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 24px 16px; }
   .grid button {
@@ -57,10 +59,13 @@
   <section class="stage" aria-label="Selected model">
     <div class="tile large"><pre id="viewer" aria-hidden="true"></pre></div>
     <div class="controls">
-      <h2 id="model-name"></h2>
-      <label><input type="radio" name="motion" value="sway" checked> Sway</label>
-      <label><input type="radio" name="motion" value="spin"> Spin</label>
-      <label><input type="radio" name="motion" value="still"> Still</label>
+      <h2 id="model-name" aria-live="polite"></h2>
+      <fieldset>
+        <legend>Motion</legend>
+        <label><input type="radio" name="motion" value="sway" checked> Sway</label>
+        <label><input type="radio" name="motion" value="spin"> Spin</label>
+        <label><input type="radio" name="motion" value="still"> Still</label>
+      </fieldset>
     </div>
   </section>
 
@@ -69,12 +74,16 @@
 
 <script src="../../src/ascii3d.js"></script>
 <script src="../../src/models.js"></script>
+<script src="../../src/motion.js"></script>
 <script>
   "use strict";
   const names = Object.keys(ASCII3D.models).sort();
   const viewer = document.getElementById("viewer");
   const title = document.getElementById("model-name");
   const grid = document.getElementById("grid");
+  const Motion = window.ASCII3DMotion;
+  const SPIN_SECONDS = Motion.LOOP / 3; // one eased turn, three per loop
+  const FRAME_MS = 70; // ~14 fps: plenty for characters, light on the CPU
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let selected = "gear";
   let motion = reduceMotion ? "still" : "sway";
@@ -108,16 +117,19 @@
     input.addEventListener("change", () => { motion = input.value; });
   });
 
+  // The same loop-safe motion the exported animations use.
   function angleAt(seconds) {
-    if (motion === "spin") return seconds * 0.9;
-    if (motion === "sway") return 0.5 * Math.sin(seconds * 1.2) - 0.2;
-    return -0.35;
+    if (motion === "spin") return Motion.spin((seconds % SPIN_SECONDS) / SPIN_SECONDS);
+    if (motion === "sway") return Motion.sway(seconds);
+    return Motion.REST_ANGLE;
   }
 
   const start = performance.now();
+  let lastFrame = "";
   function tick(now) {
-    viewer.textContent = ASCII3D.render(selected, { cols: 56, rows: 34, angle: angleAt((now - start) / 1000) });
-    setTimeout(() => requestAnimationFrame(tick), 70);
+    const frame = ASCII3D.render(selected, { cols: 56, rows: 34, angle: angleAt((now - start) / 1000) });
+    if (frame !== lastFrame) viewer.textContent = lastFrame = frame;
+    setTimeout(() => requestAnimationFrame(tick), FRAME_MS);
   }
   select(selected);
   requestAnimationFrame(tick);
