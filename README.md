@@ -6,7 +6,7 @@ App icons made from real 3D models, rendered in shaded ASCII characters on raise
 
 **New here? Start with the [walkthrough](docs/walkthrough.md)**, then read the [design guide](docs/design-guide.md) for how to use the set well.
 
-![ASCII 3D Icons: the characters, an icon forming, the folder, the installer and the home screen](docs/media/thumbnail.gif)
+![ASCII 3D Icons: the home screen, the nine characters, an icon forming, and how the Notes icon is built](docs/media/thumbnail.gif)
 
 ## Every icon is a 3D model
 
