@@ -29,6 +29,7 @@ jobs:
           mkdir -p dist/ascii-3d-icons
           cp -R icons/svg icons/ios icons/macos icons/wallpapers dist/ascii-3d-icons/
           cp LICENSE dist/ascii-3d-icons/
+          cp icons/README.md dist/ascii-3d-icons/CATALOG.md
           cp scripts/release-readme.txt dist/ascii-3d-icons/README.txt
           (cd dist && zip -rq -X ascii-3d-icons.zip ascii-3d-icons)
       - name: Publish the release

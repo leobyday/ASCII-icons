@@ -32,7 +32,7 @@
     border: 1.5px solid var(--ink);
     box-shadow: inset 0 2px 0 var(--face-top), inset 0 -4px 0 var(--bevel), 0 5px 0 var(--ink);
   }
-  .tile pre { margin: 0; font: inherit; white-space: pre; }
+  .tile pre { margin: 0; font: inherit; font-weight: 700; white-space: pre; }
   .tile.large { width: 340px; height: 340px; border-radius: 76px; border-width: 2.5px; box-shadow: inset 0 4px 0 var(--face-top), inset 0 -7px 0 var(--bevel), 0 9px 0 var(--ink); }
   .tile.large pre { font-size: 9px; line-height: 9px; }
   .controls { display: flex; flex-direction: column; gap: 14px; }
@@ -62,8 +62,8 @@
       <h2 id="model-name" aria-live="polite"></h2>
       <fieldset>
         <legend>Motion</legend>
-        <label><input type="radio" name="motion" value="sway" checked> Sway</label>
-        <label><input type="radio" name="motion" value="spin"> Spin</label>
+        <label><input type="radio" name="motion" value="turn" checked> Turn</label>
+        <label><input type="radio" name="motion" value="sway"> Sway</label>
         <label><input type="radio" name="motion" value="still"> Still</label>
       </fieldset>
     </div>
@@ -82,11 +82,10 @@
   const title = document.getElementById("model-name");
   const grid = document.getElementById("grid");
   const Motion = window.ASCII3DMotion;
-  const SPIN_SECONDS = Motion.LOOP / 3; // one eased turn, three per loop
   const FRAME_MS = 70; // ~14 fps: plenty for characters, light on the CPU
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let selected = "gear";
-  let motion = reduceMotion ? "still" : "sway";
+  let motion = reduceMotion ? "still" : "turn";
 
   for (const name of names) {
     const button = document.createElement("button");
@@ -119,7 +118,7 @@
 
   // The same loop-safe motion the exported animations use.
   function angleAt(seconds) {
-    if (motion === "spin") return Motion.spin((seconds % SPIN_SECONDS) / SPIN_SECONDS);
+    if (motion === "turn") return Motion.turn(seconds);
     if (motion === "sway") return Motion.sway(seconds);
     return Motion.REST_ANGLE;
   }

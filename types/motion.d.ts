@@ -4,6 +4,10 @@ export const LOOP: number;
 export const REST_ANGLE: number;
 /** Center of the sway (-0.2 rad). */
 export const SWAY_CENTER: number;
+/** Default turn length in seconds (LOOP / 3). */
+export const TURN_PERIOD: number;
+/** The house motion: continuous eased full turns on the icon's own vertical axis. */
+export function turn(t: number, options?: { period?: number; offset?: number }): number;
 /** Angular frequency that repeats exactly `cycles` times per loop. */
 export function loopFrequency(cycles: number, loop?: number): number;
 /** Side-to-side angle at time `t` seconds. */

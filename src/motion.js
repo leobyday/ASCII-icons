@@ -29,7 +29,7 @@
   }
 
   /**
-   * Gentle side-to-side turn that keeps the front readable.
+   * Gentle side-to-side swing, for when a full turn is too much (dense UI).
    * @param {number} t  Seconds.
    * @param {object} [o]  amplitude (rad), cycles per loop, phase (rad), loop (s).
    */
@@ -41,6 +41,21 @@
   /** One full turn over progress 0..1, eased, starting and ending at rest. */
   function spin(progress) {
     return REST_ANGLE + TAU * smooth(clamp01(progress));
+  }
+
+  /** Default turn length: three turns per loop. */
+  const TURN_PERIOD = LOOP / 3;
+
+  /**
+   * The house motion: the icon keeps turning on its own vertical axis, one
+   * eased full turn per period, slowing as it passes the front.
+   * @param {number} t  Seconds.
+   * @param {object} [o]  period (s; should divide the loop), offset (0..1 of a turn, to stagger icons).
+   */
+  function turn(t, o = {}) {
+    const { period = TURN_PERIOD, offset = 0 } = o;
+    const u = t / period + offset;
+    return spin(u - Math.floor(u));
   }
 
   /** Deterministic noise in [0, 1). */
@@ -79,5 +94,5 @@
   /** Progress through a reveal that eases out, for u = 0..1 of its duration. */
   const revealEase = (u) => 1 - Math.pow(1 - clamp01(u), 2.2);
 
-  return { LOOP, REST_ANGLE, SWAY_CENTER, loopFrequency, sway, spin, reveal, revealEase, smooth, hash };
+  return { LOOP, REST_ANGLE, SWAY_CENTER, TURN_PERIOD, loopFrequency, turn, sway, spin, reveal, revealEase, smooth, hash };
 });

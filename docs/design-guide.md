@@ -24,7 +24,7 @@ These icons carry a lot of texture. Put them on calm surfaces: paper `#F3F2EE`, 
 
 ## Use motion with intent
 
-Because they're real models, the icons can sway, spin or form out of noise. Use it like you'd use any motion token. A gentle sway (about ±0.5 rad) for ambient life. A full spin only for a hero moment. The noise-to-icon reveal for "something was just made". Always honor reduced motion. The renderer is deterministic, so a still frame is a valid fallback, not a degraded one.
+Because they're real models, the icons can turn or form out of noise. Treat motion like a token with one value: icons turn on their own vertical axis, one eased turn every 4.4 s, staggered across a grid. Same motion everywhere, so the set reads as one system. Drop to a gentle sway only where a full turn would compete with text. The noise-to-icon reveal for "something was just made". Always honor reduced motion. The renderer is deterministic, so a still frame is a valid fallback, not a degraded one.
 
 ## Keep the tile intact
 

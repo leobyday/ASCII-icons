@@ -10,7 +10,7 @@ App icons drawn as 3D models in shaded ASCII characters, free to download, and a
 
 **[Download all icons (ZIP)](https://github.com/leobyday/ascii-icons/releases/latest/download/ascii-3d-icons.zip)**: an SVG of every model, iPhone and Mac PNGs, and wallpapers.
 
-Or take just what you need:
+Every icon is listed with what it depicts in the [catalog](icons/README.md). Or take just what you need:
 
 | Folder | What's in it |
 | --- | --- |
@@ -26,7 +26,9 @@ Open any file on GitHub and click **Download raw file** to save it. Icons are MI
 Need an icon that isn't in the set, or one at a different angle, size or with motion? The skill teaches Claude the whole style, so it can make new icons that match.
 
 1. **Install the skill:** copy [`skills/ascii-3d-icons`](skills/ascii-3d-icons/SKILL.md) into your skills folder (Claude Code: `~/.claude/skills/`; in the Claude app, upload it as a skill). Designing in Figma, Paper or pen.dev? Add `ascii-icons-figma`, `-paper` or `-pen` too.
-2. **Ask for what you want:**
+2. **Ask for what you want.** Every icon is defined by the same short [spec](skills/ascii-3d-icons/SKILL.md#the-icon-spec): a subject and the parts it reads as. The style and motion are fixed, so new icons match the set.
+
+   > Make an ASCII 3D icon. Subject: a coffee cup. Reads as: a cylinder cup and a ring handle.
 
    > Make an ASCII 3D icon of a coffee cup.
 
@@ -56,7 +58,7 @@ The outlines are traced with `@`, so the shapes stay readable even at icon size.
 
 Because they're real models, they can turn:
 
-![The iPhone icons swaying in 3D](docs/media/icons.gif)
+![The iPhone icons turning on their own axis](docs/media/icons.gif)
 
 <table>
 <tr>
@@ -92,7 +94,7 @@ As one example, the repo includes a complete phone and Mac theme made with it.
 | `icons/` | The icons: SVG for every model, iPhone and Mac PNGs, wallpapers |
 | `install/` | The Mac installer and uninstaller, and the iPhone setup guide |
 | `skills/` | Claude skills for making new icons, in code or in Figma, Paper and pen.dev |
-| `src/` | The renderer, the 3D model library, motion helpers, the SVG/HTML exporter and the CLI. No dependencies. |
+| `src/` | The renderer, the 3D model library and its catalog of specs, motion helpers, the SVG/HTML exporter and the CLI. No dependencies. |
 | `types/` | TypeScript declarations for everything in `src/` |
 | `docs/` | The [walkthrough](docs/walkthrough.md), the [design guide](docs/design-guide.md), a live demo and the README media |
 | `scripts/` | The build (PNGs, SVGs, wallpapers) and `flatten.py` for turning flat icons into ASCII |
@@ -137,7 +139,7 @@ In a browser, load `src/ascii3d.js`, `src/models.js`, `src/export.js` and `src/m
 python3 scripts/flatten.py icon.png   # the flat icon as ASCII, to see which parts carry the shape
 ```
 
-Model those parts in `src/models.js`, then animate with `src/motion.js`: `sway`, a full `spin`, and `reveal` (resolving out of noise), all built to loop without a seam. The [skill](skills/ascii-3d-icons/SKILL.md) walks through the whole process with a worked example.
+Model those parts in `src/models.js`, then animate with `src/motion.js`: `turn` (the house motion: continuous turns on the icon's own axis), a single `spin`, a gentle `sway` and `reveal` (resolving out of noise), all built to loop without a seam. The [skill](skills/ascii-3d-icons/SKILL.md) walks through the whole process with a worked example.
 
 ## The skills
 

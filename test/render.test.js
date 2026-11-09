@@ -78,3 +78,13 @@ test("invalid sizes are rejected", () => {
 test("register only accepts functions", () => {
   assert.throws(() => ASCII3D.register({ broken: 3 }), TypeError);
 });
+
+test("every model has a spec, and icons/README.md is current", () => {
+  const catalog = require("../src/catalog.json");
+  for (const name of names) {
+    assert.ok(catalog[name]?.depicts && catalog[name]?.readsAs, `src/catalog.json: missing spec for ${name}`);
+  }
+  for (const name of Object.keys(catalog)) assert.ok(name in ASCII3D.models, `src/catalog.json: ${name} is not a model`);
+  const { build } = require("../scripts/catalog");
+  assert.equal(fs.readFileSync(path.join(ROOT, "icons", "README.md"), "utf8"), build(), "run node scripts/catalog.js");
+});

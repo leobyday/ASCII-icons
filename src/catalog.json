@@ -1,0 +1,194 @@
+{
+  "rain-cloud": {
+    "depicts": "A rain cloud",
+    "readsAs": "a puffy cloud over three slanted drops"
+  },
+  "video-camera": {
+    "depicts": "A video camera",
+    "readsAs": "a rounded body with a lens block on its side"
+  },
+  "flower": {
+    "depicts": "A flower",
+    "readsAs": "six round petals around a center"
+  },
+  "clock": {
+    "depicts": "A wall clock",
+    "readsAs": "a round face with a rim and two hands"
+  },
+  "camera": {
+    "depicts": "A photo camera",
+    "readsAs": "a box body, a raised lens and a viewfinder bump"
+  },
+  "note-tile": {
+    "depicts": "A note pad tile",
+    "readsAs": "a square tile with a dotted rule and two ruled lines"
+  },
+  "calendar": {
+    "depicts": "A desk calendar",
+    "readsAs": "a page with two binding rings on top"
+  },
+  "notepad": {
+    "depicts": "A notepad",
+    "readsAs": "a page with ruled lines and a bound top"
+  },
+  "checklist": {
+    "depicts": "A checklist",
+    "readsAs": "three bullets beside three lines"
+  },
+  "wallet": {
+    "depicts": "A wallet",
+    "readsAs": "a rounded case with a card peeking out and a clasp"
+  },
+  "gear": {
+    "depicts": "A gear",
+    "readsAs": "a toothed wheel with a hole in the middle"
+  },
+  "tv": {
+    "depicts": "A television",
+    "readsAs": "a monitor with an inset screen on a stand"
+  },
+  "shopping-bag": {
+    "depicts": "A shopping bag",
+    "readsAs": "a bag body with a handle loop on top"
+  },
+  "handset": {
+    "depicts": "A telephone handset",
+    "readsAs": "an arched handle between two cups"
+  },
+  "speech-bubble": {
+    "depicts": "A speech bubble",
+    "readsAs": "a rounded bubble with a tail"
+  },
+  "music-notes": {
+    "depicts": "Music notes",
+    "readsAs": "two note heads joined by a beam"
+  },
+  "globe": {
+    "depicts": "A globe",
+    "readsAs": "a sphere with an equator and meridian bands"
+  },
+  "screen-mirror": {
+    "depicts": "Screen mirroring",
+    "readsAs": "a phone standing in front of a screen"
+  },
+  "joystick": {
+    "depicts": "A joystick",
+    "readsAs": "a ball-top stick on a wide base"
+  },
+  "scissors": {
+    "depicts": "Scissors",
+    "readsAs": "two crossed blades with ring handles"
+  },
+  "bouncing-balls": {
+    "depicts": "Bouncing balls",
+    "readsAs": "three balls at different heights over a floor"
+  },
+  "sparkle": {
+    "depicts": "A sparkle",
+    "readsAs": "a four-pointed star"
+  },
+  "pointer": {
+    "depicts": "A mouse pointer",
+    "readsAs": "an arrow cursor"
+  },
+  "gamepad": {
+    "depicts": "A game controller",
+    "readsAs": "a rounded controller with two grips"
+  },
+  "containers": {
+    "depicts": "Shipping containers",
+    "readsAs": "stacked boxes"
+  },
+  "shapes": {
+    "depicts": "Basic shapes",
+    "readsAs": "a box above a ball and a cube"
+  },
+  "planet": {
+    "depicts": "A ringed planet",
+    "readsAs": "a sphere with a tilted ring"
+  },
+  "layers": {
+    "depicts": "Stacked layers",
+    "readsAs": "offset flat sheets"
+  },
+  "git-branch": {
+    "depicts": "A branching path",
+    "readsAs": "nodes joined by a line that forks"
+  },
+  "clapperboard": {
+    "depicts": "A film clapperboard",
+    "readsAs": "a slate with a striped hinged top"
+  },
+  "presentation": {
+    "depicts": "A presentation easel",
+    "readsAs": "a board on an easel"
+  },
+  "record-button": {
+    "depicts": "A record button",
+    "readsAs": "a ring around a raised dot"
+  },
+  "bar-chart": {
+    "depicts": "A bar chart",
+    "readsAs": "bars of rising height on a base"
+  },
+  "chip": {
+    "depicts": "A computer chip",
+    "readsAs": "a square die with pins on every side"
+  },
+  "paper-stack": {
+    "depicts": "A stack of paper",
+    "readsAs": "a few fanned sheets"
+  },
+  "pencil": {
+    "depicts": "A pencil",
+    "readsAs": "a long hexagonal body with a sharpened tip"
+  },
+  "play": {
+    "depicts": "A play button",
+    "readsAs": "a raised triangle"
+  },
+  "keyframe": {
+    "depicts": "A keyframe diamond",
+    "readsAs": "a diamond"
+  },
+  "rivet": {
+    "depicts": "A rivet",
+    "readsAs": "a domed head on a short shaft"
+  },
+  "phone-mockup": {
+    "depicts": "A phone",
+    "readsAs": "a tall rounded slab with a screen"
+  },
+  "screen-record": {
+    "depicts": "Screen recording",
+    "readsAs": "a screen with a record dot"
+  },
+  "hash": {
+    "depicts": "A hash sign",
+    "readsAs": "two crossing pairs of bars"
+  },
+  "headphones": {
+    "depicts": "Headphones",
+    "readsAs": "a headband arching over two ear cups"
+  },
+  "handheld-console": {
+    "depicts": "A handheld game console",
+    "readsAs": "a slab with a screen, a cross and buttons"
+  },
+  "butterfly": {
+    "depicts": "A butterfly",
+    "readsAs": "two pairs of wings around a body"
+  },
+  "paper-plane": {
+    "depicts": "A paper plane",
+    "readsAs": "a folded dart with a center crease"
+  },
+  "code-brackets": {
+    "depicts": "Code brackets",
+    "readsAs": "angle brackets around a slash"
+  },
+  "microphone": {
+    "depicts": "A microphone",
+    "readsAs": "a capsule head on a stand"
+  }
+}

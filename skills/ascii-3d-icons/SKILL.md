@@ -26,10 +26,37 @@ Match the request to a row, then follow it.
 | **An icon for an app or brand** | Model what the product *does*, never its logo: a pointer for a code editor, a paper plane for messaging. |
 | **An existing flat icon converted** | Follow section 2 from step 1: flatten it, list its parts, turn them into depth. |
 | **A matching set** ("five onboarding icons") | Model each object, then review them side by side at the same angle and size; adjust proportions until they feel like one family (similar fill of the frame, similar detail count). |
-| **Motion** ("make it spin", "show it forming") | Section 3. |
+| **Motion** ("make it spin", "show it forming") | Section 3. The motion is always the same turn on the icon's own axis. |
 | **Icons in a specific place** (Figma, Paper, pen.dev, a website, a phone) | Section 4, plus the matching companion skill. |
 
-Check `node src/cli.js` first: the library already has about 50 models, and reusing one beats a near-duplicate.
+Check `node src/cli.js` first: the library already has about 50 models, and reusing one beats a near-duplicate. `icons/README.md` lists every one with its spec.
+
+---
+
+## The icon spec
+
+Every icon, in the set or new, is defined by the same short spec. It is the prompt pattern for asking for an icon, the brief you work from, and the record you leave behind, so anyone can tell exactly what an icon is before they download it. Only two lines change per icon; everything else is fixed by this skill and never negotiated per icon.
+
+```
+Subject   what the icon depicts: a generic object, never a logo
+Reads as  the two or three parts that carry the shape
+Style     fixed: 3D model, 9-character ramp .:-=+*#%@, @ outlines, light from the upper left,
+          resting view -0.35 rad turn / 0.22 rad tilt, ink #141414 on #F3F2EE,
+          JetBrains Mono Bold, raised keycap tile
+Motion    fixed: still, or turning on its own vertical axis (one eased turn every 4.4 s)
+Output    svg | png <size> | html | gif / mp4
+```
+
+**As a prompt** (what people can paste):
+
+> Make an ASCII 3D icon. Subject: a coffee cup. Reads as: a cylinder cup and a ring handle. Output: SVG and a 512 px PNG.
+
+**How to use it:**
+
+1. **Fill in the spec before modeling.** If the request gives only a subject, write the "Reads as" line yourself and say it back in one line ("Coffee cup: a cylinder cup and a ring handle"), so the person can correct the read before you build.
+2. **Model exactly what "Reads as" lists.** Those parts are what must survive at 120 px; anything else is optional detail.
+3. **Never change the fixed lines.** A request for "a blue one", "a flat one" or "a different font" is outside the style: say so, and offer the closest thing within it (density instead of color, a still instead of motion).
+4. **Record it.** For a model added to `src/models.js`, add its spec to `src/catalog.json` (`"model-name": { "depicts": "A coffee cup", "readsAs": "a cylinder cup and a ring handle" }`) and run `node scripts/catalog.js` to update `icons/README.md`. The tests fail if a model has no spec. For a one-off icon, give the spec alongside the files.
 
 ---
 
@@ -181,10 +208,13 @@ Pick a loop length (default **13.2 s**) and make every periodic motion repeat a 
 
 ### Recipes
 
+Icons always move the same way: they **turn on their own vertical axis**, like a coin spinning on a table. The model is centered at the origin, so it rotates in place; never orbit, slide or tilt it. Use the same motion in every place an icon moves (home screens, grids, demos, the build-up), so the set feels like one system.
+
 | Motion | Use for | Recipe |
 | --- | --- | --- |
-| **Sway** | Ambient life on home screens and grids | `Motion.sway(t, { amplitude: 0.5, cycles: 2, phase: i * 0.7 })`, centered at −0.2 rad. Stagger the phase per icon so they never move in lockstep. |
-| **Full spin** | Hero moments, the last step of a build-up | `Motion.spin(p)` for p = 0..1: one eased turn that starts and ends at rest. About 2.5–3 s per turn. |
+| **Turn** (default) | Anywhere an icon moves: home screens, grids, demos, hero shots | `Motion.turn(t, { offset: i * 0.07 })`: one eased full turn every 4.4 s (three per loop), slowing as the front comes around. Stagger `offset` per icon so a grid ripples instead of moving in lockstep. |
+| **Single spin** | One turn at a set moment, such as the last step of a build-up | `Motion.spin(p)` for p = 0..1: the same eased turn, starting and ending at rest. |
+| **Sway** | Only where a full turn is too busy (dense UI, small sizes next to text) | `Motion.sway(t, { phase: i * 0.7 })`: a ±0.5 rad swing around −0.2 rad. |
 | **Generate from noise** | "Something was just made", icon reveals | `Motion.reveal(art, Motion.revealEase(u), { seed: iconIndex, frame })`. Hold pure noise for about 0.35 s, resolve over about 2 s, hold, then dissolve over about 0.6 s. |
 | **Crossfade** | Between steps of a sequence | 0.45 s. |
 | **Snap** | The moment something becomes 3D | 0.12 s, so the change reads as a beat. |
@@ -199,7 +229,7 @@ To show how any icon is made (great for case studies and launches), in five equa
 2. **ASCII:** the original fades while the flat ASCII resolves out of noise over it.
 3. **2D:** the flat ASCII from `flatten.py`, held, monochrome.
 4. **3D:** snap (0.12 s) to the model at the resting view.
-5. **Motion:** one full eased spin, ending at rest, then crossfade back to step 1.
+5. **Motion:** one full eased turn on its vertical axis (`Motion.spin`), ending at rest, then crossfade back to step 1.
 
 Label the steps along the bottom (`01 Today · 02 ASCII · 03 2D · 04 3D · 05 Motion`) with the current one bold.
 

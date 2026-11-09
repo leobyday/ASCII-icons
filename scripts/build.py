@@ -186,6 +186,8 @@ def main() -> int:
         cmd = ["node", str(ROOT / "src" / "cli.js"), "--all", "--format", "svg", "--out", str(svg_dir)]
         subprocess.run(cmd, check=True, capture_output=True)
         print(f"svg        {svg_dir.relative_to(ROOT)}/ (every model)")
+        subprocess.run(["node", str(ROOT / "scripts" / "catalog.js")], check=True, capture_output=True)
+        print("catalog    icons/README.md")
 
     if not args.only and not args.no_wallpaper:
         for icon_set in sets:

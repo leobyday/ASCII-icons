@@ -14,7 +14,7 @@ A tour of ASCII 3D Icons, from trying the icons to making new ones in your desig
 
 ## 1. What you get
 
-![The icons swaying](media/icons.gif)
+![The icons turning on their own axis](media/icons.gif)
 
 | Path | What it is |
 | --- | --- |
@@ -134,6 +134,6 @@ Each icon is a signed distance function: given a point in space, it returns how 
 lit  .  :  -  =  +  *  #  %  @  shadow
 ```
 
-A final pass compares the depth of neighboring cells. Where it jumps (an object's silhouette, or a part sitting in front of another) the cell becomes `@`, which is what keeps small icons crisp. Turning the model is just rotating the ray, so every icon can sway, spin or be drawn from any angle.
+A final pass compares the depth of neighboring cells. Where it jumps (an object's silhouette, or a part sitting in front of another) the cell becomes `@`, which is what keeps small icons crisp. Turning the model is just rotating the ray, so every icon can turn on its own axis or be drawn from any angle.
 
 The code is in `src/ascii3d.js` (about 250 lines, no dependencies).

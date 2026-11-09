@@ -32,3 +32,11 @@ test("reveal is deterministic for a frame", () => {
 test("sway centers on SWAY_CENTER", () => {
   assert.ok(close(Motion.sway(0), Motion.SWAY_CENTER));
 });
+
+test("turn makes full turns on the vertical axis and loops", () => {
+  const P = Motion.TURN_PERIOD;
+  assert.ok(close(Motion.turn(0), Motion.REST_ANGLE));
+  assert.ok(close(Motion.turn(P / 2), Motion.REST_ANGLE + Math.PI));
+  assert.ok(Math.abs(Motion.turn(Motion.LOOP) - Motion.turn(0)) < 1e-9);
+  assert.ok(close(Motion.turn(0, { offset: 0.5 }), Motion.REST_ANGLE + Math.PI));
+});
