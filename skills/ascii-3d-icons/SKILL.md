@@ -90,7 +90,7 @@ Density is the one thing people choose. It's the number of characters across the
 | **3D forward** (`3d`, the default) | 50 × 30 | Solid, shaded form; the characters become texture | Hero shots, large tiles, marketing, anything 180 px and up |
 | **Character forward** (`character`) | 26 × 15 | Type: you read the individual characters | Home screens, grids, dense UI, anything under about 120 px |
 
-Set it with `{ treatment: "character" }` in `render`, `--treatment character` in the CLI, `animate.py` and `build.py`, or `--character` in the Mac installer. The art always spans the same width of the tile; only the character count changes. Characters need about 5 px of height to look sharp: below that, choose character forward or a bigger icon.
+Set it with `{ treatment: "character" }` in `render`, `--treatment character` in the CLI, `animate.py` and `build.py`. The art always spans the same width of the tile; only the character count changes. Characters need about 5 px of height to look sharp: below that, choose character forward or a bigger icon.
 
 ### Color
 
@@ -278,11 +278,8 @@ Never put personal details (real locations, calendar events) in public assets; u
 
 ---
 
-## 5. Theming a Mac or iPhone (optional)
+## 5. Using the icons on an iPhone (optional)
 
-The repo includes an example theme built with this style.
-
-- **Mac:** `install/macos/install.sh --dry-run`, then `install/macos/install.sh`. Admin password once for App Store apps; Apple's own apps in `/System/Applications` can't change. `install/macos/uninstall.sh` reverts.
 - **iPhone:** follow `install/ios/README.md`. iOS has no theme support: each icon is a Shortcut that opens its app, without badges or animation.
 
 ---

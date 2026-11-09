@@ -101,7 +101,7 @@ As one example, the repo includes a complete phone and Mac theme made with it.
 | Folder | Contents |
 | --- | --- |
 | `icons/` | The icons: SVG for every model, iPhone and Mac PNGs, wallpapers |
-| `install/` | The Mac installer and uninstaller, and the iPhone setup guide |
+| `install/` | Which icon goes with which app (`ios/icons.tsv`, `macos/apps.tsv`) and the iPhone setup guide |
 | `skills/` | Claude skills for making new icons, in code or in Figma, Paper and pen.dev |
 | `src/` | The renderer, the 3D model library and its catalog of specs, motion helpers, the SVG/HTML exporter and the CLI. No dependencies. |
 | `types/` | TypeScript declarations for everything in `src/` |
@@ -123,7 +123,7 @@ node src/cli.js gear --format html           # a keycap tile as HTML
 
 To add an app:
 
-1. Pick a model from the list, or write a new one in `src/models.js`. The [walkthrough](docs/walkthrough.md#6-make-new-icons-by-hand) shows an example.
+1. Pick a model from the list, or write a new one in `src/models.js`. The [walkthrough](docs/walkthrough.md#5-make-new-icons-by-hand) shows an example.
 2. Add a line to `install/macos/apps.tsv` or `install/ios/icons.tsv`: the app name, a tab, then the model name.
 3. Run `python3 scripts/build.py`, then `npm test`.
 
@@ -157,42 +157,14 @@ The `skills/` folder has four skills:
 
 | Skill | What it does |
 | --- | --- |
-| [`ascii-3d-icons`](skills/ascii-3d-icons/SKILL.md) | Models new objects, builds icons, installs them on Mac or iPhone |
+| [`ascii-3d-icons`](skills/ascii-3d-icons/SKILL.md) | Models new objects and builds, exports and animates icons |
 | [`ascii-icons-figma`](skills/ascii-icons-figma/SKILL.md) | Creates icons in Figma as editable components |
 | [`ascii-icons-paper`](skills/ascii-icons-paper/SKILL.md) | Creates icons in Paper as live HTML |
 | [`ascii-icons-pen`](skills/ascii-icons-pen/SKILL.md) | Creates icons in pen.dev documents |
 
 Copy the ones you want into your skills folder (for Claude Code: `~/.claude/skills/`), connect your design tool's MCP server, and ask, for example: *"Make an ASCII 3D icon for Notion in my Figma file."*
 
-## Theme your Mac or iPhone
-
-Optional: apply the icons to your own devices. The Mac installer does it in one command; the iPhone takes a few manual steps per app.
-
-### Mac
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/leobyday/ascii-icons/main/install/macos/install.sh | bash
-```
-
-Or from a clone:
-
-```sh
-git clone https://github.com/leobyday/ascii-icons.git
-cd ascii-icons
-install/macos/install.sh --dry-run   # see what would change
-install/macos/install.sh             # 3D forward; add --character for the other treatment
-```
-
-The installer changes the icon of every app in `install/macos/apps.tsv` that you have installed, sets the wallpaper (skip it with `--icons-only`), then restarts the Dock and Finder.
-
-- App Store apps such as Keynote ask for your admin password once.
-- If an app still won't change, allow Terminal in **System Settings → Privacy & Security → App Management** and run it again.
-- Apple's built-in apps (Safari, Mail, Finder…) are protected by macOS and can't be re-iconed.
-- App updates sometimes restore the original icon; run the installer again.
-
-To undo everything: `install/macos/uninstall.sh`.
-
-### iPhone
+## Use them as app icons on iPhone
 
 iOS doesn't allow icon themes, so each icon is added as a Shortcut that opens the app. See [install/ios/README.md](install/ios/README.md).
 

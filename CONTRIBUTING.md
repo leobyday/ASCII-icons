@@ -16,7 +16,6 @@ The [skill](skills/ascii-3d-icons/SKILL.md) and the [walkthrough](docs/walkthrou
 
 - JavaScript: plain ES2017+, no dependencies. `src/` must keep working in both Node and the browser.
 - Python: standard library plus Pillow, checked with `ruff`.
-- Shell: bash 3.2 compatible (the version macOS ships), checked with `shellcheck`.
 
 ## Pull requests
 
