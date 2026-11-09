@@ -1,9 +1,9 @@
 ASCII 3D Icons
 ==============
 
-  svg/         every icon as an SVG keycap tile (editable text, JetBrains Mono)
-  ios/         iPhone app icons, 1024 px PNG
-  macos/       Mac app icons, 1024 px PNG
+  3d/          3D-forward treatment: 50 x 30 characters, the shading reads as form
+  character/   character-forward treatment: 26 x 15 bigger characters you read as type
+               each has svg/ (every icon, editable text), ios/ and macos/ (1024 px PNG)
   wallpapers/  macos.png (3456 x 2234) and ios.png (1179 x 2556)
   CATALOG.md   every icon: what it depicts and the parts it reads as
 

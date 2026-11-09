@@ -18,9 +18,8 @@ A tour of ASCII 3D Icons, from trying the icons to making new ones in your desig
 
 | Path | What it is |
 | --- | --- |
-| `icons/macos/*.png` | 33 Mac app icons, 1024 px |
-| `icons/ios/*.png` | 16 iPhone app icons, 1024 px |
-| `icons/svg/*.svg` | Every model as an SVG keycap icon with editable text |
+| `icons/3d/` | The 3D-forward treatment (50 × 30 characters): `svg/` every model, `ios/` 16 iPhone icons, `macos/` 33 Mac icons |
+| `icons/character/` | The same in the character-forward treatment (26 × 15 bigger characters) |
 | `icons/wallpapers/` | Mac (3456 × 2234) and iPhone (1179 × 2556) wallpapers |
 | `skills/` | Four Claude skills: the icon maker, plus Figma, Paper and pen.dev |
 | `docs/demo/index.html` | Every model, live, turning on its axis in your browser |
@@ -56,7 +55,7 @@ To undo: `install/macos/uninstall.sh` restores every original icon and your old 
 
 iOS doesn't allow icon themes, so each icon becomes a Shortcut that opens its app. About a minute per app; full steps in [install/ios/README.md](../install/ios/README.md). In short:
 
-1. Save `icons/ios/*.png` and `icons/wallpapers/ios.png` to Photos.
+1. Save `icons/3d/ios/*.png` (or `icons/character/ios/`) and `icons/wallpapers/ios.png` to Photos.
 2. Shortcuts → **+** → **Open App** → pick the app.
 3. Shortcut name → **Add to Home Screen** → icon → **Choose Photo**.
 4. Remove the original icon from the Home Screen (it stays in the App Library).
@@ -65,7 +64,7 @@ Shortcut icons don't show badges, and nothing on iOS can animate an icon.
 
 ## 4. Use the icons in a design
 
-Every model is in `icons/svg/` as a 1024 px keycap icon. The characters are real text in JetBrains Mono, so they stay editable.
+Every model is in `icons/3d/svg/` and `icons/character/svg/` as a 1024 px keycap icon. The characters are real text in JetBrains Mono, so they stay editable.
 
 - **Figma:** drag the SVGs onto the canvas, or let Claude build them as components (section 5).
 - **Paper:** paste the HTML from `node src/cli.js <model> --format html`, or import the SVG.

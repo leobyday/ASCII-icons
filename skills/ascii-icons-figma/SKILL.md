@@ -17,7 +17,7 @@ node src/cli.js handset --format svg > handset.svg
 node src/cli.js --all --format svg --out svg/    # the whole set
 ```
 
-Ready-made SVGs for every model are already in `icons/svg/`.
+Ready-made SVGs for every model are already in `icons/3d/svg/` and `icons/character/svg/` (one folder per treatment).
 
 ## 2. Place it in Figma
 

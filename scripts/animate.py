@@ -4,6 +4,7 @@
 Examples:
     python3 scripts/animate.py gear                          # gear.mp4: turning on its axis
     python3 scripts/animate.py gear --motion generate        # resolving out of noise as it turns
+    python3 scripts/animate.py gear --treatment character    # bigger characters
     python3 scripts/animate.py note-tile --motion build --source notes.png --out notes.gif
                                                              # the five-step build-up from a flat icon
 
@@ -29,7 +30,7 @@ from pathlib import Path
 
 from PIL import Image, ImageFilter
 
-from build import COLS, INK, ROOT, ROWS, draw_text_art, icon_image
+from build import INK, ROOT, TREATMENTS, draw_text_art, icon_image
 from flatten import flatten
 
 LOOP = 13.2
@@ -37,7 +38,7 @@ STAGE = LOOP / 5  # each build-up step
 SLOW, FAST = 0.45, 0.12  # crossfade, and the snap into 3D
 NOISE_FPS = 12.5
 RAMP = ".:-=+*#%@"
-BUILD_COLS, BUILD_ROWS = 46, 28  # flatten.py's default grid
+STANDALONE_WIDTH = 0.418  # share of the frame the icon spans in the build-up
 
 
 def frames_from_cli(model: str, motion: str, fps: float, cols: int, rows: int, seconds: float | None = None) -> list[str]:
@@ -74,9 +75,11 @@ def window_opacity(t: float, start: float, length: float, fade_in: float, fade_o
 
 
 def standalone(art: str, size: int, opacity: float = 1.0) -> Image.Image:
-    """Characters alone with the standalone drop shadow (no tile), transparent background."""
+    """Characters alone with the standalone drop shadow (no tile), transparent background.
+    The art spans the same width as the original icon, whatever the grid."""
     layer = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-    draw_text_art(layer, art, (size / 2, size / 2), size * 0.0149)
+    cols = max(len(line) for line in art.split("\n"))
+    draw_text_art(layer, art, (size / 2, size / 2), size * STANDALONE_WIDTH / (cols * 0.6))
     return with_shadow(layer, size, opacity)
 
 
@@ -95,17 +98,18 @@ def with_shadow(layer: Image.Image, size: int, opacity: float) -> Image.Image:
     return out
 
 
-def build_frames(model: str, source: Path, size: int, fps: float) -> list[Image.Image]:
+def build_frames(model: str, source: Path, size: int, fps: float, treatment: str) -> list[Image.Image]:
     """The five-step build-up: Today -> ASCII -> 2D -> 3D -> Motion."""
+    cols, rows = TREATMENTS[treatment]
     original = Image.open(source).convert("RGBA")
-    side = round(size * 0.418)
+    side = round(size * STANDALONE_WIDTH)
     original = original.resize((side, round(side * original.height / original.width)), Image.LANCZOS)
     original_layer = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     original_layer.alpha_composite(original, ((size - original.width) // 2, (size - original.height) // 2))
 
-    flat = flatten(str(source), BUILD_COLS, BUILD_ROWS).split("\n")
-    still = still_from_cli(model, BUILD_COLS, BUILD_ROWS)
-    spin = frames_from_cli(model, "spin", fps, BUILD_COLS, BUILD_ROWS, seconds=STAGE)
+    flat = flatten(str(source), cols, rows).split("\n")
+    still = still_from_cli(model, cols, rows)
+    spin = frames_from_cli(model, "spin", fps, cols, rows, seconds=STAGE)
 
     frames = []
     for k in range(round(LOOP * fps)):
@@ -136,10 +140,11 @@ def build_frames(model: str, source: Path, size: int, fps: float) -> list[Image.
     return frames
 
 
-def tile_frames(model: str, motion: str, size: int, fps: float) -> list[Image.Image]:
+def tile_frames(model: str, motion: str, size: int, fps: float, treatment: str) -> list[Image.Image]:
     """Keycap-tile frames for turn, generate or sway."""
+    cols, rows = TREATMENTS[treatment]
     frames = []
-    for art in frames_from_cli(model, motion, fps, COLS, ROWS):
+    for art in frames_from_cli(model, motion, fps, cols, rows):
         img = Image.new("RGBA", (1024, 1024), (243, 242, 238, 255))
         img.alpha_composite(icon_image(art))
         frames.append(img.resize((size, size), Image.LANCZOS) if size != 1024 else img)
@@ -169,6 +174,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("model", help="a model name (node src/cli.js lists them)")
     parser.add_argument("--motion", choices=["turn", "generate", "sway", "build"], default="turn")
+    parser.add_argument("--treatment", choices=sorted(TREATMENTS), default="3d", help="3d (default) or character")
     parser.add_argument("--source", type=Path, help="the original flat icon (PNG), for --motion build")
     parser.add_argument("--size", type=int, default=720, help="width and height in px (default 720)")
     parser.add_argument("--fps", type=float, default=25)
@@ -184,9 +190,9 @@ def main() -> int:
         parser.error("--out must end in .mp4 or .gif")
 
     if args.motion == "build":
-        frames = build_frames(args.model, args.source, args.size, args.fps)
+        frames = build_frames(args.model, args.source, args.size, args.fps, args.treatment)
     else:
-        frames = tile_frames(args.model, args.motion, args.size, args.fps)
+        frames = tile_frames(args.model, args.motion, args.size, args.fps, args.treatment)
     encode(frames, out, args.fps)
     print(out)
     return 0

@@ -37,9 +37,11 @@ test("text is escaped for XML", () => {
 });
 
 test("every model has a built SVG", () => {
-  const dir = path.join(__dirname, "..", "icons", "svg");
-  for (const name of Object.keys(ASCII3D.models)) {
-    assert.ok(fs.existsSync(path.join(dir, `${name}.svg`)), `missing icons/svg/${name}.svg`);
+  for (const treatment of Object.keys(ASCII3D.TREATMENTS)) {
+    const dir = path.join(__dirname, "..", "icons", treatment, "svg");
+    for (const name of Object.keys(ASCII3D.models)) {
+      assert.ok(fs.existsSync(path.join(dir, `${name}.svg`)), `missing icons/${treatment}/svg/${name}.svg`);
+    }
   }
 });
 

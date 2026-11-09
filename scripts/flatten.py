@@ -6,7 +6,7 @@ which parts of the artwork carry the shape, before you model them.
 
 Examples:
     python3 scripts/flatten.py icon.png
-    python3 scripts/flatten.py icon.png --cols 46 --rows 28 > icon.txt
+    python3 scripts/flatten.py icon.png --treatment character > icon.txt
 
 Mapping (dark ink on light paper, monochrome):
     transparent     -> space
@@ -26,6 +26,7 @@ from PIL import Image
 
 SUPERSAMPLE = 4
 ALPHA_CUTOFF = 0.35
+TREATMENTS = {"3d": (50, 30), "character": (26, 15)}  # cols, rows; matches src/ascii3d.js
 
 
 def sample(path: str, cols: int, rows: int) -> list[list[tuple[float, float, float, float]]]:
@@ -74,10 +75,12 @@ def flatten(path: str, cols: int, rows: int) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("image", help="flat icon image (PNG, JPG or WebP; export SVGs to PNG first)")
-    parser.add_argument("--cols", type=int, default=46, help="characters per line (default 46)")
-    parser.add_argument("--rows", type=int, default=28, help="lines (default 28; cols x 0.6 = rows keeps a square icon square)")
+    parser.add_argument("--treatment", choices=sorted(TREATMENTS), default="3d", help="grid: 3d (50 x 30, default) or character (26 x 15)")
+    parser.add_argument("--cols", type=int, help="characters per line (overrides the treatment)")
+    parser.add_argument("--rows", type=int, help="lines (overrides the treatment; cols x 0.6 = rows keeps a square icon square)")
     args = parser.parse_args()
-    print(flatten(args.image, args.cols, args.rows))
+    cols, rows = TREATMENTS[args.treatment]
+    print(flatten(args.image, args.cols or cols, args.rows or rows))
     return 0
 
 

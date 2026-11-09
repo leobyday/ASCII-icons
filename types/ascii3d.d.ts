@@ -1,10 +1,14 @@
 /** A signed distance function: distance from (x, y, z) to the model's surface. */
 export type SDF = (x: number, y: number, z: number) => number;
 
+export type Treatment = "3d" | "character";
+
 export interface RenderOptions {
-  /** Characters per line. Default 50. */
+  /** "3d" (50 x 30, the default) or "character" (26 x 15). Sets the grid. */
+  treatment?: Treatment;
+  /** Characters per line; overrides the treatment. */
   cols?: number;
-  /** Lines. Default 30. */
+  /** Lines; overrides the treatment. */
   rows?: number;
   /** Turn around the vertical axis, in radians. Default -0.35. */
   angle?: number;
@@ -16,6 +20,8 @@ export interface RenderOptions {
 
 /** The shading characters, lightest to darkest: ".:-=+*#%@". */
 export const RAMP: string;
+/** Grid size of each treatment. */
+export const TREATMENTS: Readonly<Record<Treatment, Readonly<{ cols: number; rows: number }>>>;
 /** Every registered model, by name. Populated by `require("ascii-3d-icons/models")`. */
 export const models: Readonly<Record<string, SDF>>;
 /** Add or replace models. */

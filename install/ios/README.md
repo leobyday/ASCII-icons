@@ -4,7 +4,7 @@ iOS doesn't let apps or scripts replace another app's icon, so the icons go on t
 
 ## 1. Get the images onto your phone
 
-Send `icons/ios/` and `icons/wallpapers/ios.png` to your phone (AirDrop, iCloud Drive or Files), then save them to Photos.
+Send `icons/3d/ios/` (or `icons/character/ios/` for the character-forward treatment) and `icons/wallpapers/ios.png` to your phone (AirDrop, iCloud Drive or Files), then save them to Photos.
 
 ## 2. Add an icon for each app
 

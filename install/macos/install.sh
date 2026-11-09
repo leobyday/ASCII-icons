@@ -2,11 +2,13 @@
 # ASCII 3D Icons for macOS: swaps app icons and sets the wallpaper.
 #
 #   install/macos/install.sh                 apply icons + wallpaper
+#   install/macos/install.sh --character     the character-forward treatment (default: 3D forward)
 #   install/macos/install.sh --icons-only    leave the wallpaper alone
 #   install/macos/install.sh --dry-run       list what would change
 #
-# Or straight from GitHub:
+# Or straight from GitHub (add options after "bash -s --"):
 #   curl -fsSL https://raw.githubusercontent.com/leobyday/ascii-icons/main/install/macos/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/leobyday/ascii-icons/main/install/macos/install.sh | bash -s -- --character
 set -euo pipefail
 
 REPO_URL="${ASCII3D_REPO:-https://github.com/leobyday/ascii-icons.git}"
@@ -24,12 +26,14 @@ SET_ICON_JXA='function run(argv) {
 
 dry_run=0
 set_wallpaper=1
+treatment="3d"
 
 usage() {
   cat <<'EOF'
 ASCII 3D Icons for macOS: swaps app icons and sets the wallpaper.
 
-  install/macos/install.sh                 apply icons + wallpaper
+  install/macos/install.sh                 apply icons + wallpaper (3D forward)
+  install/macos/install.sh --character     use the character-forward treatment
   install/macos/install.sh --icons-only    leave the wallpaper alone
   install/macos/install.sh --dry-run       list what would change
 EOF
@@ -44,6 +48,7 @@ parse_args() {
     case "$arg" in
       --dry-run) dry_run=1 ;;
       --icons-only) set_wallpaper=0 ;;
+      --character) treatment="character" ;;
       -h | --help) usage; exit 0 ;;
       *) die "unknown option: $arg" ;;
     esac
@@ -92,7 +97,7 @@ main() {
   while IFS=$'\t' read -r name model; do
     case "$name" in "" | \#*) continue ;; esac
     app="$APPS_DIR/$name.app"
-    png="$repo/icons/macos/$(slug "$name").png"
+    png="$repo/icons/$treatment/macos/$(slug "$name").png"
     if [ ! -d "$app" ]; then skipped=$((skipped + 1)); continue; fi
     if [ ! -f "$png" ]; then say "  ! no icon file for $name (model: $model)"; continue; fi
     if [ "$dry_run" = 1 ]; then say "  would theme  $name"; themed=$((themed + 1)); continue; fi
@@ -111,7 +116,7 @@ main() {
       local still=()
       for name in "${failed[@]}"; do
         app="$APPS_DIR/$name.app"
-        png="$repo/icons/macos/$(slug "$name").png"
+        png="$repo/icons/$treatment/macos/$(slug "$name").png"
         if [ "$(set_icon "$png" "$app" sudo)" = ok ]; then
           say "  themed       $name"; themed=$((themed + 1)); sudo touch "$app" 2>/dev/null || true
         else

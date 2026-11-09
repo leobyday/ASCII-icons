@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="a3d-paper-plane-1024-title">
+<title id="a3d-paper-plane-1024-title">paper-plane</title>
+<defs>
+<linearGradient id="a3d-paper-plane-1024-face" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#ECEBE6"/></linearGradient>
+<clipPath id="a3d-paper-plane-1024-clip"><rect x="112" y="96" width="800" height="788" rx="172"/></clipPath>
+</defs>
+<rect x="100" y="114" width="824" height="812" rx="184" fill="#141414"/>
+<rect x="100" y="84" width="824" height="812" rx="184" fill="#141414"/>
+<rect x="112" y="96" width="800" height="788" rx="172" fill="url(#a3d-paper-plane-1024-face)"/>
+<rect x="112" y="858" width="800" height="26" fill="#DCDBD5" clip-path="url(#a3d-paper-plane-1024-clip)"/>
+<g font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-weight="700" font-size="41.2" fill="#141414">
+<text x="660.32" y="337.56">@@</text>
+<text x="536.72" y="378.76">@@@@@@</text>
+<text x="437.84" y="419.96">@@@@****@</text>
+<text x="314.24" y="461.16">@@@@@****@%*@</text>
+<text x="289.52" y="502.36">@@******@@***@</text>
+<text x="338.96" y="543.56">@***-@****@</text>
+<text x="363.68" y="584.76">@@@*****@</text>
+<text x="413.12" y="625.96">@****@</text>
+<text x="437.84" y="667.16">@@**@</text>
+<text x="487.28" y="708.36">@@</text>
+</g>
+</svg>

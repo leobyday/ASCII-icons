@@ -12,11 +12,20 @@ App icons drawn as 3D models in shaded ASCII characters, free to download, and a
 
 Every icon is listed with what it depicts in the [catalog](icons/README.md). Or take just what you need:
 
-| Folder | What's in it |
+Every icon comes in two treatments: the same 3D model on a fine or a coarse grid of characters.
+
+![The same icons turning in both treatments: character forward on top, 3D forward below](docs/media/treatments.gif)
+
+| Treatment | Grid | Looks like |
+| --- | --- | --- |
+| **3D forward** ([`icons/3d/`](icons/3d)) | 50 × 30 characters | The shading reads as a solid object. The default. |
+| **Character forward** ([`icons/character/`](icons/character)) | 26 × 15 characters | Bigger characters you read as type. |
+
+| Folder (in each treatment) | What's in it |
 | --- | --- |
-| [`icons/svg/`](icons/svg) | Every icon (about 50) as an SVG keycap tile. The characters stay editable text in Figma, Paper, pen.dev or a browser. |
-| [`icons/ios/`](icons/ios) | iPhone app icons, 1024 px PNG |
-| [`icons/macos/`](icons/macos) | Mac app icons, 1024 px PNG |
+| `svg/` | Every icon (about 50) as an SVG keycap tile. The characters stay editable text in Figma, Paper, pen.dev or a browser. |
+| `ios/` | iPhone app icons, 1024 px PNG |
+| `macos/` | Mac app icons, 1024 px PNG |
 | [`icons/wallpapers/`](icons/wallpapers) | Matching wallpapers for Mac and iPhone |
 
 Open any file on GitHub and click **Download raw file** to save it. Icons are MIT licensed, so use them in anything.
@@ -108,6 +117,7 @@ You need Node 18+. For the PNGs you also need Python 3 with Pillow (`pip3 instal
 node src/cli.js                              # list the models
 node src/cli.js gear --angle 0.5             # preview one in the terminal
 node src/cli.js gear --format svg > gear.svg # a finished icon as SVG
+node src/cli.js gear --treatment character  # bigger characters (default: 3d)
 node src/cli.js gear --format html           # a keycap tile as HTML
 ```
 
@@ -170,7 +180,7 @@ Or from a clone:
 git clone https://github.com/leobyday/ascii-icons.git
 cd ascii-icons
 install/macos/install.sh --dry-run   # see what would change
-install/macos/install.sh
+install/macos/install.sh             # 3D forward; add --character for the other treatment
 ```
 
 The installer changes the icon of every app in `install/macos/apps.tsv` that you have installed, sets the wallpaper (skip it with `--icons-only`), then restarts the Dock and Finder.

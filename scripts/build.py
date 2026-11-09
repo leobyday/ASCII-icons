@@ -2,7 +2,8 @@
 """Build the icon PNGs and wallpapers from the 3D models.
 
 Examples:
-    python3 scripts/build.py                  # everything (PNGs, SVGs, wallpapers)
+    python3 scripts/build.py                  # everything: both treatments, PNGs, SVGs, wallpapers
+    python3 scripts/build.py --treatment 3d   # just one treatment
     python3 scripts/build.py --set macos      # just the Mac icons
     python3 scripts/build.py --only Slack     # one app
     python3 scripts/build.py --gallery        # also write docs/media/preview.png
@@ -35,8 +36,10 @@ BEVEL = (220, 219, 213)
 WALLPAPER_INK = (168, 167, 159)
 
 ICON_SIZE = 1024
+TREATMENTS = {"3d": (50, 30), "character": (26, 15)}  # cols, rows; matches TREATMENTS in src/ascii3d.js
+ART_WIDTH = 660  # px the art spans on a 1024 tile, whatever the grid
 TILE = (100, 84, 924, 896, 184, 12)  # x0, y0, x1, y1, corner radius, outline
-COLS, ROWS = 50, 30
+COLS, ROWS = TREATMENTS["3d"]
 WALLPAPERS = {"macos": (3456, 2234), "ios": (1179, 2556)}
 
 
@@ -56,9 +59,9 @@ def read_manifest(path: Path) -> list[tuple[str, str]]:
     return pairs
 
 
-def render_ascii(models: list[str]) -> dict[str, str]:
+def render_ascii(models: list[str], treatment: str = "3d") -> dict[str, str]:
     """Render models with the JS engine; returns {model: ascii art}."""
-    cmd = ["node", str(ROOT / "src" / "cli.js"), "--format", "json", "--cols", str(COLS), "--rows", str(ROWS), *models]
+    cmd = ["node", str(ROOT / "src" / "cli.js"), "--format", "json", "--treatment", treatment, *models]
     result = subprocess.run(cmd, check=True, capture_output=True, text=True)
     return json.loads(result.stdout)
 
@@ -126,10 +129,11 @@ def draw_text_art(img: Image.Image, art: str, center: tuple[float, float], font_
 
 
 def icon_image(art: str) -> Image.Image:
-    """ASCII art on the raised keycap tile, 1024 px."""
+    """ASCII art on the raised keycap tile, 1024 px. The art spans the same width for any grid."""
     x0, y0, x1, y1, _, _ = TILE
     img = keycap_tile().copy()
-    draw_text_art(img, art, ((x0 + x1) / 2, (y0 + y1) / 2), 22)
+    cols = max(len(line) for line in art.split("\n"))
+    draw_text_art(img, art, ((x0 + x1) / 2, (y0 + y1) / 2), ART_WIDTH / (cols * 0.6))
     return img
 
 
@@ -176,6 +180,7 @@ def draw_gallery(path: Path, icons: list[Path], columns: int = 10, cell: int = 1
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--set", choices=sorted(MANIFESTS), action="append", help="icon set to build (default: all)")
+    parser.add_argument("--treatment", choices=sorted(TREATMENTS), action="append", help="treatment to build (default: both)")
     parser.add_argument("--only", action="append", metavar="APP", help="build only these apps")
     parser.add_argument("--no-wallpaper", action="store_true", help="skip the wallpapers")
     parser.add_argument("--gallery", action="store_true", help="write docs/media/preview.png")
@@ -191,20 +196,22 @@ def main() -> int:
         print(f"No app named {', '.join(args.only)} in the manifests.", file=sys.stderr)
         return 1
 
-    art = render_ascii(sorted({model for _, _, model in jobs}))
-    written = []
-    for icon_set, name, model in jobs:
-        out = ROOT / "icons" / icon_set / f"{slug(name)}.png"
-        out.parent.mkdir(parents=True, exist_ok=True)
-        draw_icon(art[model], out)
-        written.append(out)
-        print(f"icon       {out.relative_to(ROOT)}")
+    treatments = args.treatment or sorted(TREATMENTS)
+    for treatment in treatments:
+        art = render_ascii(sorted({model for _, _, model in jobs}), treatment)
+        for icon_set, name, model in jobs:
+            out = ROOT / "icons" / treatment / icon_set / f"{slug(name)}.png"
+            out.parent.mkdir(parents=True, exist_ok=True)
+            draw_icon(art[model], out)
+            print(f"icon       {out.relative_to(ROOT)}")
+
+        if not args.only:
+            svg_dir = ROOT / "icons" / treatment / "svg"
+            cmd = ["node", str(ROOT / "src" / "cli.js"), "--all", "--treatment", treatment, "--format", "svg", "--out", str(svg_dir)]
+            subprocess.run(cmd, check=True, capture_output=True)
+            print(f"svg        {svg_dir.relative_to(ROOT)}/ (every model)")
 
     if not args.only:
-        svg_dir = ROOT / "icons" / "svg"
-        cmd = ["node", str(ROOT / "src" / "cli.js"), "--all", "--format", "svg", "--out", str(svg_dir)]
-        subprocess.run(cmd, check=True, capture_output=True)
-        print(f"svg        {svg_dir.relative_to(ROOT)}/ (every model)")
         subprocess.run(["node", str(ROOT / "scripts" / "catalog.js")], check=True, capture_output=True)
         print("catalog    icons/README.md")
 
@@ -222,7 +229,7 @@ def main() -> int:
         unique = {}
         for icon_set in sorted(MANIFESTS):
             for name, model in read_manifest(MANIFESTS[icon_set]):
-                unique.setdefault(model, ROOT / "icons" / icon_set / f"{slug(name)}.png")
+                unique.setdefault(model, ROOT / "icons" / "3d" / icon_set / f"{slug(name)}.png")
         draw_gallery(out, [p for p in unique.values() if p.exists()])
         print(f"gallery    {out.relative_to(ROOT)}")
     return 0

@@ -62,9 +62,12 @@ test("every manifest entry points at a real model", () => {
 
 test("every manifest entry has a built icon", () => {
   const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-  for (const [file, dir] of [["install/ios/icons.tsv", "icons/ios"], ["install/macos/apps.tsv", "icons/macos"]]) {
-    for (const [app] of manifest(file)) {
-      assert.ok(fs.existsSync(path.join(ROOT, dir, `${slug(app)}.png`)), `${dir}: missing ${app}`);
+  for (const treatment of Object.keys(ASCII3D.TREATMENTS)) {
+    for (const [file, set] of [["install/ios/icons.tsv", "ios"], ["install/macos/apps.tsv", "macos"]]) {
+      const dir = path.join("icons", treatment, set);
+      for (const [app] of manifest(file)) {
+        assert.ok(fs.existsSync(path.join(ROOT, dir, `${slug(app)}.png`)), `${dir}: missing ${app}`);
+      }
     }
   }
 });
@@ -87,4 +90,14 @@ test("every model has a spec, and icons/README.md is current", () => {
   for (const name of Object.keys(catalog)) assert.ok(name in ASCII3D.models, `src/catalog.json: ${name} is not a model`);
   const { build } = require("../scripts/catalog");
   assert.equal(fs.readFileSync(path.join(ROOT, "icons", "README.md"), "utf8"), build(), "run node scripts/catalog.js");
+});
+
+test("treatments set the grid; explicit sizes win", () => {
+  const lines = (opts) => ASCII3D.render("gear", opts).split("\n");
+  assert.equal(lines({}).length, 30);
+  assert.equal(lines({}).at(0).length, 50);
+  assert.equal(lines({ treatment: "character" }).length, 15);
+  assert.equal(lines({ treatment: "character" }).at(0).length, 26);
+  assert.equal(lines({ treatment: "character", cols: 30 }).at(0).length, 30);
+  assert.throws(() => ASCII3D.render("gear", { treatment: "flat" }), RangeError);
 });

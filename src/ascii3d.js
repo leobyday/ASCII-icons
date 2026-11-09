@@ -22,6 +22,16 @@
 
   /** Characters from lightest to darkest. */
   const RAMP = ".:-=+*#%@";
+
+  /**
+   * The two treatments: the same model on a coarse or a fine character grid.
+   *   character  fewer, bigger characters: you read the glyphs (home screens, small sizes)
+   *   3d         more, smaller characters: the shading reads as solid form (the default)
+   */
+  const TREATMENTS = Object.freeze({
+    "3d": Object.freeze({ cols: 50, rows: 30 }),
+    character: Object.freeze({ cols: 26, rows: 15 }),
+  });
   const OUTLINE = "@";
 
   // Camera and lighting.
@@ -193,8 +203,9 @@
    *
    * @param {string|Function} model  A registered model name or an SDF function.
    * @param {object} [options]
-   * @param {number} [options.cols=50]  Characters per line.
-   * @param {number} [options.rows=30]  Lines.
+   * @param {string} [options.treatment="3d"]  "3d" (50 x 30) or "character" (26 x 15); sets the grid.
+   * @param {number} [options.cols]  Characters per line (overrides the treatment).
+   * @param {number} [options.rows]  Lines (overrides the treatment).
    * @param {number} [options.angle=-0.35]  Turn around the vertical axis, radians.
    * @param {number} [options.tilt=0.22]  Tip toward the viewer, radians.
    * @param {number} [options.cellAspect=0.6]  Character width / line height.
@@ -203,7 +214,9 @@
   function render(model, options = {}) {
     const field = typeof model === "function" ? model : models[model];
     if (!field) throw new Error(`Unknown model "${model}"`);
-    const { cols = 50, rows = 30, angle = -0.35, tilt = 0.22, cellAspect = 0.6 } = options;
+    const grid = TREATMENTS[options.treatment ?? "3d"];
+    if (!grid) throw new RangeError(`treatment must be one of ${Object.keys(TREATMENTS).join(", ")}, got ${options.treatment}`);
+    const { cols = grid.cols, rows = grid.rows, angle = -0.35, tilt = 0.22, cellAspect = 0.6 } = options;
     for (const [key, value] of [["cols", cols], ["rows", rows]]) {
       if (!Number.isInteger(value) || value < 1) throw new RangeError(`${key} must be a positive integer, got ${value}`);
     }
@@ -255,5 +268,5 @@
     return lines.join("\n");
   }
 
-  return { RAMP, render, register, models, sdf };
+  return { RAMP, TREATMENTS, render, register, models, sdf };
 });

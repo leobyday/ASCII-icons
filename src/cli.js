@@ -7,7 +7,8 @@
  *   node src/cli.js gear --angle 0.4 --cols 70 --rows 40
  *   node src/cli.js gear --format svg > gear.svg
  *   node src/cli.js gear globe --format html   keycap tiles for a web page
- *   node src/cli.js --all --format svg --out icons/svg
+ *   node src/cli.js gear --treatment character  bigger characters (the default is 3d)
+ *   node src/cli.js --all --format svg --out icons/3d/svg
  *   node src/cli.js gear globe --format json   { model: art } (used by the build)
  *   node src/cli.js gear --motion turn --fps 25    { model: [frames] } for one loop of a motion
  */
@@ -24,7 +25,7 @@ const FORMATS = ["text", "svg", "html", "json"];
 const NUMBER_OPTIONS = ["--cols", "--rows", "--angle", "--tilt", "--size", "--fps", "--seconds"];
 const MOTIONS = ["turn", "spin", "sway", "generate"];
 const USAGE = `usage: node src/cli.js [model ...] [--all] [--format ${FORMATS.join("|")}] [--out DIR]
-                      [--cols N] [--rows N] [--angle RAD] [--tilt RAD] [--size PX]
+                      [--treatment 3d|character] [--cols N] [--rows N] [--angle RAD] [--tilt RAD] [--size PX]
                       [--motion ${MOTIONS.join("|")}] [--fps N] [--seconds S]`;
 
 function parseArgs(argv) {
@@ -35,6 +36,12 @@ function parseArgs(argv) {
     else if (arg === "--all") opts.all = true;
     else if (arg === "--format") opts.format = argv[++i];
     else if (arg === "--motion") opts.motion = argv[++i];
+    else if (arg === "--treatment") {
+      opts.render.treatment = argv[++i];
+      if (!(opts.render.treatment in ASCII3D.TREATMENTS)) {
+        throw new Error(`--treatment must be one of ${Object.keys(ASCII3D.TREATMENTS).join(", ")}`);
+      }
+    }
     else if (arg === "--out") {
       opts.out = argv[++i];
       if (!opts.out) throw new Error("--out needs a directory");

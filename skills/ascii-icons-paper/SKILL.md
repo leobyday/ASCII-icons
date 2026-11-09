@@ -30,7 +30,7 @@ With the Paper MCP server:
 4. Make sure JetBrains Mono is available in Paper (check with its font tools). If it isn't, any monospace font keeps the grid aligned, but tell the user the look changes.
 5. Take a screenshot of the artboard to check every tile, then export (PNG or SVG) if the user wants files.
 
-Without the MCP server, paste the HTML into a Paper HTML/code layer, or import `icons/svg/<model>.svg` as an image.
+Without the MCP server, paste the HTML into a Paper HTML/code layer, or import `icons/3d/svg/<model>.svg` (or `icons/character/svg/`) as an image.
 
 ## Keep the style
 

@@ -43,7 +43,7 @@ function build() {
   const rows = names.map((name) => {
     const { depicts, readsAs } = catalog[name];
     const used = apps[name] ? [...apps[name]].join(", ") : "";
-    return `| <img src="svg/${name}.svg" width="72" alt="${depicts}"> | \`${name}\` | ${depicts} | ${readsAs} | ${used} |`;
+    return `| <img src="3d/svg/${name}.svg" width="72" alt="${depicts}, 3D forward"> | <img src="character/svg/${name}.svg" width="72" alt="${depicts}, character forward"> | \`${name}\` | ${depicts} | ${readsAs} | ${used} |`;
   });
 
   return `# The icons
@@ -56,6 +56,7 @@ Reads as  the two or three parts that carry the shape
 Style     fixed: 3D model, 9-character ramp .:-=+*#%@, @ outlines, light from the upper left,
           resting view -0.35 rad turn / 0.22 rad tilt, ink #141414 on #F3F2EE,
           JetBrains Mono Bold, raised keycap tile
+Treatment 3d (50 x 30 characters, the default) or character (26 x 15)
 Motion    fixed: still, or turning on its own vertical axis (one eased turn every 4.4 s)
 \`\`\`
 
@@ -63,19 +64,22 @@ So a file here is exactly: that subject, built from those parts, in that style. 
 
 ## Files
 
+Two treatments of the same models: [\`3d/\`](3d) (50 × 30 characters, the shading reads as form) and [\`character/\`](character) (26 × 15 bigger characters). Each has:
+
 | Folder | Format |
 | --- | --- |
-| [\`svg/\`](svg) | Every icon, 1024 px keycap tile, characters as editable text |
-| [\`ios/\`](ios) | iPhone app icons, 1024 px PNG, named by app |
-| [\`macos/\`](macos) | Mac app icons, 1024 px PNG, named by app |
-| [\`wallpapers/\`](wallpapers) | Mac (3456 × 2234) and iPhone (1179 × 2556) |
+| \`svg/\` | Every icon, 1024 px keycap tile, characters as editable text |
+| \`ios/\` | iPhone app icons, 1024 px PNG, named by app |
+| \`macos/\` | Mac app icons, 1024 px PNG, named by app |
+
+[\`wallpapers/\`](wallpapers) has the Mac (3456 × 2234) and iPhone (1179 × 2556) wallpapers.
 
 ## Catalog
 
 ${names.length} icons. Generated from \`src/catalog.json\` by \`node scripts/catalog.js\`.
 
-| | Model | Subject | Reads as | Used for |
-| --- | --- | --- | --- | --- |
+| 3D forward | Character forward | Model | Subject | Reads as | Used for |
+| --- | --- | --- | --- | --- | --- |
 ${rows.join("\n")}
 `;
 }

@@ -27,7 +27,7 @@ jobs:
       - name: Package the icons
         run: |
           mkdir -p dist/ascii-3d-icons
-          cp -R icons/svg icons/ios icons/macos icons/wallpapers dist/ascii-3d-icons/
+          cp -R icons/3d icons/character icons/wallpapers dist/ascii-3d-icons/
           cp LICENSE dist/ascii-3d-icons/
           cp icons/README.md dist/ascii-3d-icons/CATALOG.md
           cp scripts/release-readme.txt dist/ascii-3d-icons/README.txt

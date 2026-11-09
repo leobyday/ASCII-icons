@@ -21,7 +21,7 @@ Match the request to a row, then follow it.
 
 | If the person wants… | Do this |
 | --- | --- |
-| **An icon that's already in the set** | Give it to them: `icons/svg/<model>.svg`, `icons/ios/` or `icons/macos/` PNGs, or the full ZIP at https://github.com/leobyday/ascii-icons/releases/latest/download/ascii-3d-icons.zip. For another size, angle or format, export it (section 4). |
+| **An icon that's already in the set** | Give it to them in the treatment they want: `icons/3d/` or `icons/character/`, each with `svg/<model>.svg` and `ios/` and `macos/` PNGs, or the full ZIP at https://github.com/leobyday/ascii-icons/releases/latest/download/ascii-3d-icons.zip. For another size, angle or format, export it (section 4). |
 | **A new icon from an idea** ("a coffee cup", "an icon for our payments feature") | Pick the most familiar physical object for it, then model it (section 2, steps 2–5). |
 | **An icon for an app or brand** | If it's the person's own brand (or they have rights to it), you can model its mark like any other shape. For anyone else's product, model what it *does* instead of its logo, since logos are trademarks: a pointer for a code editor, a paper plane for messaging. |
 | **An existing flat icon converted** | Follow section 2 from step 1: flatten it, list its parts, turn them into depth. |
@@ -43,13 +43,14 @@ Reads as  the two or three parts that carry the shape
 Style     fixed: 3D model, 9-character ramp .:-=+*#%@, @ outlines, light from the upper left,
           resting view -0.35 rad turn / 0.22 rad tilt, ink #141414 on #F3F2EE,
           JetBrains Mono Bold, raised keycap tile
+Treatment 3d (default) | character
 Motion    fixed: still, or turning on its own vertical axis (one eased turn every 4.4 s)
 Output    svg | png <size> | html | gif / mp4
 ```
 
 **As a prompt** (what people can paste):
 
-> Make an ASCII 3D icon. Subject: a coffee cup. Reads as: a cylinder cup and a ring handle. Output: SVG and a 512 px PNG.
+> Make an ASCII 3D icon. Subject: a coffee cup. Reads as: a cylinder cup and a ring handle. Treatment: character. Output: SVG and a 512 px PNG.
 
 **How to use it:**
 
@@ -78,7 +79,18 @@ Every icon is shaded with these nine characters, lightest to darkest:
 
 - One light, from the upper left and slightly in front: direction `(-0.45, 0.62, -0.64)`. Brightness = `0.02 + 0.82 × diffuse^1.4`.
 - Resting view: turned `-0.35` rad around the vertical axis, tipped `0.22` rad toward the viewer. Every still icon uses this view.
-- Default grid: 50 × 30 characters. A character cell is 0.6 as wide as it is tall, so `cols × 0.6 ≈ rows` keeps square things square.
+- A character cell is 0.6 as wide as it is tall, so `cols × 0.6 ≈ rows` keeps square things square.
+
+### Treatments (density)
+
+Density is the one thing people choose. It's the number of characters across the icon, and there are exactly two settings. Never pick a grid in between: every place an icon appears uses one of these, so icons match wherever they're shown.
+
+| Treatment | Grid | Reads as | Use for |
+| --- | --- | --- | --- |
+| **3D forward** (`3d`, the default) | 50 × 30 | Solid, shaded form; the characters become texture | Hero shots, large tiles, marketing, anything 180 px and up |
+| **Character forward** (`character`) | 26 × 15 | Type: you read the individual characters | Home screens, grids, dense UI, anything under about 120 px |
+
+Set it with `{ treatment: "character" }` in `render`, `--treatment character` in the CLI, `animate.py` and `build.py`, or `--character` in the Mac installer. The art always spans the same width of the tile; only the character count changes. Characters need about 5 px of height to look sharp: below that, choose character forward or a bigger icon.
 
 ### Color
 
@@ -277,6 +289,7 @@ The repo includes an example theme built with this style.
 
 ## Review checklist
 
+- [ ] One of the two treatments, `3d` or `character`, used everywhere the icon appears
 - [ ] One object, named after the object; a logo only if it's the person's own or they have rights to it
 - [ ] Reads at a glance at the resting view and at `--angle 0.5`
 - [ ] Clean `@` outline around every part; `@` used for nothing else

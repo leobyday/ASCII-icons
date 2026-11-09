@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="a3d-planet-1024-title">
+<title id="a3d-planet-1024-title">planet</title>
+<defs>
+<linearGradient id="a3d-planet-1024-face" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#ECEBE6"/></linearGradient>
+<clipPath id="a3d-planet-1024-clip"><rect x="112" y="96" width="800" height="788" rx="172"/></clipPath>
+</defs>
+<rect x="100" y="114" width="824" height="812" rx="184" fill="#141414"/>
+<rect x="100" y="84" width="824" height="812" rx="184" fill="#141414"/>
+<rect x="112" y="96" width="800" height="788" rx="172" fill="url(#a3d-planet-1024-face)"/>
+<rect x="112" y="858" width="800" height="26" fill="#DCDBD5" clip-path="url(#a3d-planet-1024-clip)"/>
+<g font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-weight="700" font-size="41.2" fill="#141414">
+<text x="413.12" y="337.56">@@@@@@@@@@@@</text>
+<text x="314.24" y="378.76">@@@@:::--=+*#@</text>
+<text x="709.76" y="378.76">@@@</text>
+<text x="264.8" y="419.96">@@</text>
+<text x="338.96" y="419.96">@::@@@@@@@@@@@</text>
+<text x="759.2" y="419.96">@@</text>
+<text x="240.08" y="461.16">@@</text>
+<text x="314.24" y="461.16">@@%%*++++*#%%%@@</text>
+<text x="783.92" y="461.16">@</text>
+<text x="215.36" y="502.36">@@</text>
+<text x="338.96" y="502.36">@=@@@++*@@@@%@</text>
+<text x="759.2" y="502.36">@@</text>
+<text x="215.36" y="543.56">@</text>
+<text x="314.24" y="543.56">@@*+****##%%%%@@</text>
+<text x="734.48" y="543.56">@@</text>
+<text x="215.36" y="584.76">@@</text>
+<text x="338.96" y="584.76">@@####%%%%%%@@</text>
+<text x="709.76" y="584.76">@@</text>
+<text x="240.08" y="625.96">@@@</text>
+<text x="363.68" y="625.96">@@@%%%%%%@@@@@</text>
+<text x="314.24" y="667.16">@@@@@@@@@@@@</text>
+</g>
+</svg>
