@@ -43,3 +43,11 @@ test("parses options without running anything", () => {
   assert.equal(opts.size, 120);
   assert.throws(() => parseArgs(["--out"]), /directory/);
 });
+
+test("--motion writes one seamless loop of frames", () => {
+  const out = JSON.parse(run("gear", "--format", "json", "--motion", "turn", "--fps", "10", "--cols", "20", "--rows", "12").stdout);
+  assert.equal(out.gear.length, Math.round(4.4 * 10));
+  assert.equal(new Set(out.gear).size > 10, true, "frames should change as it turns");
+  assert.equal(run("gear", "--motion", "turn").status, 2, "needs --format json");
+  assert.equal(run("gear", "--format", "json", "--motion", "wobble").status, 2);
+});

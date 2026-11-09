@@ -97,7 +97,7 @@ As one example, the repo includes a complete phone and Mac theme made with it.
 | `src/` | The renderer, the 3D model library and its catalog of specs, motion helpers, the SVG/HTML exporter and the CLI. No dependencies. |
 | `types/` | TypeScript declarations for everything in `src/` |
 | `docs/` | The [walkthrough](docs/walkthrough.md), the [design guide](docs/design-guide.md), a live demo and the README media |
-| `scripts/` | The build (PNGs, SVGs, wallpapers) and `flatten.py` for turning flat icons into ASCII |
+| `scripts/` | The build (PNGs, SVGs, wallpapers, catalog), `flatten.py` for turning flat icons into ASCII, and `animate.py` for MP4 and GIF |
 | `test/` | Tests for the renderer, exporter, motion helpers and CLI |
 
 ## Make icons by hand
@@ -117,7 +117,7 @@ To add an app:
 2. Add a line to `install/macos/apps.tsv` or `install/ios/icons.tsv`: the app name, a tab, then the model name.
 3. Run `python3 scripts/build.py`, then `npm test`.
 
-Open `docs/demo/index.html` in a browser to see every model rotating.
+Open `docs/demo/index.html` in a browser to browse every model and watch any of them turn.
 
 ### Use the renderer in your own project
 
@@ -139,7 +139,7 @@ In a browser, load `src/ascii3d.js`, `src/models.js`, `src/export.js` and `src/m
 python3 scripts/flatten.py icon.png   # the flat icon as ASCII, to see which parts carry the shape
 ```
 
-Model those parts in `src/models.js`, then animate with `src/motion.js`: `turn` (the house motion: continuous turns on the icon's own axis), a single `spin`, a gentle `sway` and `reveal` (resolving out of noise), all built to loop without a seam. The [skill](skills/ascii-3d-icons/SKILL.md) walks through the whole process with a worked example.
+Model those parts in `src/models.js`, then animate. `python3 scripts/animate.py <model>` writes an MP4 or GIF with the house motion, `--motion generate` resolves it out of noise, and `--motion build --source icon.png` makes the five-step build-up shown above. The motions live in `src/motion.js`: `turn` (the house motion: continuous turns on the icon's own axis), a single `spin`, a gentle `sway` and `reveal` (resolving out of noise), all built to loop without a seam. The [skill](skills/ascii-3d-icons/SKILL.md) walks through the whole process with a worked example.
 
 ## The skills
 
@@ -194,6 +194,6 @@ New models and app mappings are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Code and icons: [MIT](LICENSE). The bundled JetBrains Mono font is under the [SIL Open Font License](scripts/fonts/OFL.txt).
 
-App names are used only to say which icon goes with which app. The icons are generic objects and don't reproduce any company's logo.
+App names are used only to say which icon goes with which app. The shared icons are generic objects rather than company logos, because logos are trademarks of their owners. For your own brand, the skill can model your mark the same way.
 
 The Notes icon in the animations is Apple's ([Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Apple_Notes_icon.svg)); Notes is a trademark of Apple Inc. It isn't included in this repository.

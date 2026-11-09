@@ -12,7 +12,7 @@ The value is consistency you don't have to police. One light source, one charact
 
 ## Pick objects, not logos
 
-Each icon depicts a thing: a handset, a gear, a speech bubble. That's deliberate. It keeps the set legally clean, and it keeps it honest. An ASCII render of a brand mark is a worse brand mark. A good object reads faster than a squinted logo at 60 px. When you're choosing what to model, ask what the app *does*, then pick the most familiar physical thing that does it.
+Each icon depicts a thing: a handset, a gear, a speech bubble. That's deliberate. Logos are trademarks, so a shared set of them isn't ours to give away; your own mark is a different story, and the skill can model it. An ASCII render of a brand mark is a worse brand mark. A good object reads faster than a squinted logo at 60 px. When you're choosing what to model, ask what the app *does*, then pick the most familiar physical thing that does it.
 
 ## Respect the size floor
 

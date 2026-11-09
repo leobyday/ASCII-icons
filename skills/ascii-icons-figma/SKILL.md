@@ -49,4 +49,4 @@ The SVG is 1024 × 1024. Scale the component in Figma (hold ⇧ with the Scale t
 
 ## Keep the style
 
-Don't recolor the characters or swap the font; the look depends on JetBrains Mono, ink `#141414` and the keycap face `#FFFFFF` to `#ECEBE6`. New objects follow the modeling rules in the `ascii-3d-icons` skill: generic objects, never company logos.
+Don't recolor the characters or swap the font; the look depends on JetBrains Mono, ink `#141414` and the keycap face `#FFFFFF` to `#ECEBE6`. New objects follow the modeling rules in the `ascii-3d-icons` skill (generic objects for the shared set; a logo only when it's the person's own or they have rights to it).

@@ -2,3 +2,6 @@ line-length = 140
 
 [lint]
 select = ["E", "F", "W", "I", "UP", "B"]
+
+[lint.isort]
+known-first-party = ["build", "flatten"]

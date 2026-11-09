@@ -40,3 +40,11 @@ test("turn makes full turns on the vertical axis and loops", () => {
   assert.ok(Math.abs(Motion.turn(Motion.LOOP) - Motion.turn(0)) < 1e-9);
   assert.ok(close(Motion.turn(0, { offset: 0.5 }), Motion.REST_ANGLE + Math.PI));
 });
+
+test("generate: noise, resolve, hold, dissolve in one 4.4 s turn", () => {
+  assert.equal(Motion.generate(0.1).progress, 0);
+  assert.equal(Motion.generate(3).progress, 1);
+  assert.ok(Motion.generate(1.2).progress > 0 && Motion.generate(1.2).progress < 1);
+  assert.ok(close(Motion.generate(0).angle, Motion.REST_ANGLE));
+  assert.ok(close(Motion.GENERATE_CYCLE, 4.4));
+});

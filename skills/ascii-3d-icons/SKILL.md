@@ -7,7 +7,7 @@ description: Turn anything into an icon in the ASCII 3D Icons style (3D models r
 
 Every icon in this style is a small 3D model, written as a signed distance function (SDF), lit from one direction and drawn with nine characters. Nothing is drawn by hand. To change an icon you change its model, and the renderer draws it. Follow this skill closely: icons only look like they belong together because every one goes through the same rules.
 
-The style works for any subject. Whatever someone asks for (an object, an app, a feature, a brand-free product shot, an existing flat icon, a whole set), the job is the same: find the object, model it, render it with these rules.
+The style works for any subject. Whatever someone asks for (an object, an app, a feature, a product, an existing flat icon, a whole set), the job is the same: find the object, model it, render it with these rules.
 
 Repository: https://github.com/leobyday/ascii-icons. Clone it if it isn't on disk and work from the clone. Needs Node 18+; PNG builds and `flatten.py` also need Python 3 with Pillow.
 
@@ -23,7 +23,7 @@ Match the request to a row, then follow it.
 | --- | --- |
 | **An icon that's already in the set** | Give it to them: `icons/svg/<model>.svg`, `icons/ios/` or `icons/macos/` PNGs, or the full ZIP at https://github.com/leobyday/ascii-icons/releases/latest/download/ascii-3d-icons.zip. For another size, angle or format, export it (section 4). |
 | **A new icon from an idea** ("a coffee cup", "an icon for our payments feature") | Pick the most familiar physical object for it, then model it (section 2, steps 2–5). |
-| **An icon for an app or brand** | Model what the product *does*, never its logo: a pointer for a code editor, a paper plane for messaging. |
+| **An icon for an app or brand** | If it's the person's own brand (or they have rights to it), you can model its mark like any other shape. For anyone else's product, model what it *does* instead of its logo, since logos are trademarks: a pointer for a code editor, a paper plane for messaging. |
 | **An existing flat icon converted** | Follow section 2 from step 1: flatten it, list its parts, turn them into depth. |
 | **A matching set** ("five onboarding icons") | Model each object, then review them side by side at the same angle and size; adjust proportions until they feel like one family (similar fill of the frame, similar detail count). |
 | **Motion** ("make it spin", "show it forming") | Section 3. The motion is always the same turn on the icon's own axis. |
@@ -38,7 +38,7 @@ Check `node src/cli.js` first: the library already has about 50 models, and reus
 Every icon, in the set or new, is defined by the same short spec. It is the prompt pattern for asking for an icon, the brief you work from, and the record you leave behind, so anyone can tell exactly what an icon is before they download it. Only two lines change per icon; everything else is fixed by this skill and never negotiated per icon.
 
 ```
-Subject   what the icon depicts: a generic object, never a logo
+Subject   what the icon depicts: an object (a logo only if it's yours to use)
 Reads as  the two or three parts that carry the shape
 Style     fixed: 3D model, 9-character ramp .:-=+*#%@, @ outlines, light from the upper left,
           resting view -0.35 rad turn / 0.22 rad tilt, ink #141414 on #F3F2EE,
@@ -110,7 +110,8 @@ Scale proportionally for other sizes (corner radius ≈ 22.5% of the tile, base 
 
 ### Subjects
 
-- One **generic object** per icon: what the thing is *about*, never a logo. A pointer for a code editor, headphones for music, a handset for calls.
+- One **object** per icon: what the thing is *about*. A pointer for a code editor, headphones for music, a handset for calls.
+- **Why the shared set has no logos:** company logos are trademarks, so a public set of look-alike logos invites takedowns, and a generic object also reads faster at icon size. This is a rights rule, not a style rule: a person's own logo, or one they have rights to, can be modeled the same way. Don't recreate another company's mark.
 - Name models after the object (`handset`, `speech-bubble`), never after an app or brand. If the icons are for specific apps, map apps to models separately (the example theme does this in `install/ios/icons.tsv` and `install/macos/apps.tsv`).
 
 ### Sizes
@@ -215,7 +216,7 @@ Icons always move the same way: they **turn on their own vertical axis**, like a
 | **Turn** (default) | Anywhere an icon moves: home screens, grids, demos, hero shots | `Motion.turn(t, { offset: i * 0.07 })`: one eased full turn every 4.4 s (three per loop), slowing as the front comes around. Stagger `offset` per icon so a grid ripples instead of moving in lockstep. |
 | **Single spin** | One turn at a set moment, such as the last step of a build-up | `Motion.spin(p)` for p = 0..1: the same eased turn, starting and ending at rest. |
 | **Sway** | Only where a full turn is too busy (dense UI, small sizes next to text) | `Motion.sway(t, { phase: i * 0.7 })`: a ±0.5 rad swing around −0.2 rad. |
-| **Generate from noise** | "Something was just made", icon reveals | `Motion.reveal(art, Motion.revealEase(u), { seed: iconIndex, frame })`. Hold pure noise for about 0.35 s, resolve over about 2 s, hold, then dissolve over about 0.6 s. |
+| **Generate from noise** | "Something was just made", icon reveals | `Motion.generate(t)` gives the angle, progress and noise frame for a 4.4 s cycle: 0.35 s of noise, a 2.05 s eased resolve while the icon turns once, a 1.4 s hold, a 0.6 s dissolve. Render at its `angle`, then `Motion.reveal(art, progress, { seed: iconIndex, frame })`. |
 | **Crossfade** | Between steps of a sequence | 0.45 s. |
 | **Snap** | The moment something becomes 3D | 0.12 s, so the change reads as a beat. |
 
@@ -248,10 +249,18 @@ node src/cli.js --all --format svg --out out/      # one file per model
 python3 scripts/build.py                           # all PNGs, SVGs and wallpapers
 ```
 
-For video, render frames with the motion helpers in a browser (load `src/ascii3d.js`, `src/models.js`, `src/motion.js`), capture at 25 fps for exactly one loop, then:
+For motion, use `scripts/animate.py`. It runs the recipes from section 3 with their exact timings and writes a seamless loop (needs ffmpeg):
 
-- **MP4** (best for social): `ffmpeg -framerate 25 -i f%04d.png -c:v libx264 -crf 18 -pix_fmt yuv420p -movflags +faststart out.mp4`
-- **GIF** (READMEs, social posts; keep under 5 MB): 10–12.5 fps, a palette of 64–128 colors, no dithering (`palettegen=stats_mode=diff` → `paletteuse=dither=none`).
+```sh
+python3 scripts/animate.py gear                                   # turn, on the keycap tile (the default)
+python3 scripts/animate.py gear --motion generate                 # resolve out of noise while turning
+python3 scripts/animate.py note-tile --motion build --source notes.png --out notes.gif
+                                                                  # the five-step build-up from a flat icon
+```
+
+- **MP4** (best for social; the default): H.264, CRF 18, `yuv420p`, `faststart`.
+- **GIF** (READMEs; keep under 5 MB): 12.5 fps, a 96-color palette, no dithering. Lower `--size` if it's too big.
+- For frames in your own pipeline: `node src/cli.js gear --format json --motion turn --fps 25` returns every frame of one loop as text. In a browser, call `Motion.turn`, `Motion.generate` and `Motion.reveal` directly.
 
 Never put personal details (real locations, calendar events) in public assets; use neutral text.
 
@@ -268,7 +277,7 @@ The repo includes an example theme built with this style.
 
 ## Review checklist
 
-- [ ] One generic object, named after the object, no logo
+- [ ] One object, named after the object; a logo only if it's the person's own or they have rights to it
 - [ ] Reads at a glance at the resting view and at `--angle 0.5`
 - [ ] Clean `@` outline around every part; `@` used for nothing else
 - [ ] Monochrome; source colors became density or relief

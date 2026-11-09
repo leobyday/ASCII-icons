@@ -34,4 +34,4 @@ Without the MCP server, paste the HTML into a Paper HTML/code layer, or import `
 
 ## Keep the style
 
-Keep the inline styles as generated: JetBrains Mono Bold, ink `#141414`, the white-to-`#ECEBE6` face, the `#DCDBD5` bevel and the solid ink base. New objects follow the modeling rules in the `ascii-3d-icons` skill: generic objects, never company logos.
+Keep the inline styles as generated: JetBrains Mono Bold, ink `#141414`, the white-to-`#ECEBE6` face, the `#DCDBD5` bevel and the solid ink base. New objects follow the modeling rules in the `ascii-3d-icons` skill (generic objects for the shared set; a logo only when it's the person's own or they have rights to it).

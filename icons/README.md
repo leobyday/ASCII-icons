@@ -3,7 +3,7 @@
 Every icon in this set is defined by the same spec, the one the [skill](../skills/ascii-3d-icons/SKILL.md#the-icon-spec) uses to make new ones. Two lines change per icon; the rest is fixed.
 
 ```
-Subject   what the icon depicts: a generic object, never a logo
+Subject   what the icon depicts: a generic object (the shared set has no logos: they're trademarks)
 Reads as  the two or three parts that carry the shape
 Style     fixed: 3D model, 9-character ramp .:-=+*#%@, @ outlines, light from the upper left,
           resting view -0.35 rad turn / 0.22 rad tilt, ink #141414 on #F3F2EE,

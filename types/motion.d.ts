@@ -8,6 +8,12 @@ export const SWAY_CENTER: number;
 export const TURN_PERIOD: number;
 /** The house motion: continuous eased full turns on the icon's own vertical axis. */
 export function turn(t: number, options?: { period?: number; offset?: number }): number;
+/** Rate at which characters change, in frames per second (12.5). */
+export const NOISE_FPS: number;
+/** Length of one generate cycle in seconds (4.4). */
+export const GENERATE_CYCLE: number;
+/** One frame of the generate recipe: turn once while resolving out of noise, hold, dissolve. */
+export function generate(t: number): { angle: number; progress: number; frame: number };
 /** Angular frequency that repeats exactly `cycles` times per loop. */
 export function loopFrequency(cycles: number, loop?: number): number;
 /** Side-to-side angle at time `t` seconds. */

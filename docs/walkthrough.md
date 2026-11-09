@@ -23,7 +23,7 @@ A tour of ASCII 3D Icons, from trying the icons to making new ones in your desig
 | `icons/svg/*.svg` | Every model as an SVG keycap icon with editable text |
 | `icons/wallpapers/` | Mac (3456 × 2234) and iPhone (1179 × 2556) wallpapers |
 | `skills/` | Four Claude skills: the icon maker, plus Figma, Paper and pen.dev |
-| `docs/demo/index.html` | Every model, live and rotating, in your browser |
+| `docs/demo/index.html` | Every model, live, turning on its axis in your browser |
 
 Get everything with:
 
@@ -70,7 +70,7 @@ Every model is in `icons/svg/` as a 1024 px keycap icon. The characters are real
 - **Figma:** drag the SVGs onto the canvas, or let Claude build them as components (section 5).
 - **Paper:** paste the HTML from `node src/cli.js <model> --format html`, or import the SVG.
 - **pen.dev:** paste the SVG's contents onto the canvas.
-- **A web page:** `node src/cli.js <model> --format html --size 120` gives a self-contained tile. For live, rotating icons, load `src/ascii3d.js` and `src/models.js` and call `ASCII3D.render()`; `docs/demo/index.html` shows how.
+- **A web page:** `node src/cli.js <model> --format html --size 120` gives a self-contained tile. For live, turning icons, load `src/ascii3d.js` and `src/models.js` and call `ASCII3D.render()`; `docs/demo/index.html` shows how.
 
 Install JetBrains Mono (free from Google Fonts) so the characters keep their look.
 
@@ -97,7 +97,7 @@ The `skills/` folder teaches Claude the whole process.
 
 > Add icons for Linear and Arc to my Mac theme and install them.
 
-Claude picks or models an object (never a company's logo), previews it in the terminal until it reads clearly, then builds it into your file or onto your Mac.
+Claude picks or models an object (for other companies' apps, an object rather than their trademarked logo), previews it in the terminal until it reads clearly, then builds it into your file or onto your Mac.
 
 ## 6. Make new icons by hand
 
@@ -124,7 +124,8 @@ node src/cli.js coffee-cup --angle 0.5
 2. **Preview** at the default angle and at `--angle 0.5` until it reads at a glance.
 3. **Map it to an app** in `install/macos/apps.tsv` or `install/ios/icons.tsv`: the app name, a tab, the model name.
 4. **Build** with `python3 scripts/build.py` (PNGs, SVGs and wallpapers), or `--only "App Name"` for one PNG.
-5. **Test** with `npm test`.
+5. **Animate** (optional) with `python3 scripts/animate.py coffee-cup`: an MP4 of it turning on its axis. Add `--motion generate` to show it forming, or `--out coffee-cup.gif` for a GIF.
+6. **Test** with `npm test`.
 
 ## 7. How it works
 

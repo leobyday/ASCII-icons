@@ -13,6 +13,7 @@ Needs Node 18+ (to run the renderer) and Pillow (pip3 install pillow).
 from __future__ import annotations
 
 import argparse
+import functools
 import json
 import math
 import re
@@ -34,6 +35,7 @@ BEVEL = (220, 219, 213)
 WALLPAPER_INK = (168, 167, 159)
 
 ICON_SIZE = 1024
+TILE = (100, 84, 924, 896, 184, 12)  # x0, y0, x1, y1, corner radius, outline
 COLS, ROWS = 50, 30
 WALLPAPERS = {"macos": (3456, 2234), "ios": (1179, 2556)}
 
@@ -83,9 +85,10 @@ def vertical_gradient(top: tuple, bottom: tuple, y0: int, y1: int) -> Image.Imag
     return grad
 
 
-def draw_icon(art: str, path: Path) -> None:
-    """Draw ASCII art on a raised keycap tile and save a 1024px PNG."""
-    x0, y0, x1, y1, radius, border = 100, 84, 924, 896, 184, 12
+@functools.cache
+def keycap_tile() -> Image.Image:
+    """The empty raised keycap tile, 1024 px (drawn once, reused for every icon and frame)."""
+    x0, y0, x1, y1, radius, border = TILE
     size = (ICON_SIZE, ICON_SIZE)
     img = Image.new("RGBA", size, (0, 0, 0, 0))
 
@@ -104,19 +107,35 @@ def draw_icon(art: str, path: Path) -> None:
     ImageDraw.Draw(band).rectangle((0, y1 - border - bevel_height, ICON_SIZE, ICON_SIZE), fill=255)
     bevel = ImageChops.multiply(ImageChops.subtract(face, upper), band)
     img.paste(Image.new("RGBA", size, BEVEL + (255,)), (0, 0), bevel)
+    return img
 
-    font_size = 22
-    font = ImageFont.truetype(str(FONT), font_size)
+
+def draw_text_art(img: Image.Image, art: str, center: tuple[float, float], font_size: float, fill: tuple = INK) -> None:
+    """Draw ASCII art centered on `center`, one monospace cell per character."""
+    font = ImageFont.truetype(str(FONT), round(font_size))
     cell_w, line_h = font_size * 0.6, font_size
     lines = art.split("\n")
-    left = (x0 + x1) / 2 - COLS * cell_w / 2
-    top = (y0 + y1) / 2 - len(lines) * line_h / 2
+    cols = max(len(line) for line in lines)
+    left = center[0] - cols * cell_w / 2
+    top = center[1] - len(lines) * line_h / 2
     draw = ImageDraw.Draw(img)
     for j, line in enumerate(lines):
         for i, ch in enumerate(line):
             if ch != " ":
-                draw.text((left + i * cell_w, top + j * line_h), ch, font=font, fill=INK + (255,))
-    img.save(path)
+                draw.text((left + i * cell_w, top + j * line_h), ch, font=font, fill=fill + (255,))
+
+
+def icon_image(art: str) -> Image.Image:
+    """ASCII art on the raised keycap tile, 1024 px."""
+    x0, y0, x1, y1, _, _ = TILE
+    img = keycap_tile().copy()
+    draw_text_art(img, art, ((x0 + x1) / 2, (y0 + y1) / 2), 22)
+    return img
+
+
+def draw_icon(art: str, path: Path) -> None:
+    """Draw ASCII art on a raised keycap tile and save a 1024px PNG."""
+    icon_image(art).save(path)
 
 
 def draw_wallpaper(path: Path, width: int, height: int) -> None:

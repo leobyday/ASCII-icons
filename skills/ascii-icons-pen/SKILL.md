@@ -34,4 +34,4 @@ Without the MCP server, copy the SVG file's contents and paste it onto the pen.d
 
 ## Keep the style
 
-Monospace alignment is everything: never change the font size of single characters or use a proportional font. New objects follow the modeling rules in the `ascii-3d-icons` skill: generic objects, never company logos.
+Monospace alignment is everything: never change the font size of single characters or use a proportional font. New objects follow the modeling rules in the `ascii-3d-icons` skill (generic objects for the shared set; a logo only when it's the person's own or they have rights to it).

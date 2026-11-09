@@ -19,6 +19,9 @@
   /** Sway centers slightly right of rest so both sides of the swing stay readable. */
   const SWAY_CENTER = -0.2;
 
+  /** Characters change at about 12.5 fps: faster flickers, slower looks broken. */
+  const NOISE_FPS = 12.5;
+
   const clamp01 = (v) => Math.max(0, Math.min(1, v));
   /** Ease in and out (smoothstep). */
   const smooth = (p) => p * p * (3 - 2 * p);
@@ -94,5 +97,25 @@
   /** Progress through a reveal that eases out, for u = 0..1 of its duration. */
   const revealEase = (u) => 1 - Math.pow(1 - clamp01(u), 2.2);
 
-  return { LOOP, REST_ANGLE, SWAY_CENTER, TURN_PERIOD, loopFrequency, turn, sway, spin, reveal, revealEase, smooth, hash };
+  /** Timing of one "generate" cycle, in seconds: noise, resolve, hold, dissolve. */
+  const GENERATE = { noise: 0.35, resolve: 2.05, hold: 1.4, dissolve: 0.6 };
+  const GENERATE_CYCLE = GENERATE.noise + GENERATE.resolve + GENERATE.hold + GENERATE.dissolve; // 4.4 s
+
+  /**
+   * One frame of the "generate" recipe at time t (seconds into a cycle):
+   * the icon turns once while it resolves out of noise, holds, then dissolves.
+   * @returns {{ angle: number, progress: number, frame: number }} pass angle to render, then
+   *   progress and frame to reveal.
+   */
+  function generate(t) {
+    const g = GENERATE, u = ((t % GENERATE_CYCLE) + GENERATE_CYCLE) % GENERATE_CYCLE;
+    let progress;
+    if (u < g.noise) progress = 0;
+    else if (u < g.noise + g.resolve) progress = revealEase((u - g.noise) / g.resolve);
+    else if (u < g.noise + g.resolve + g.hold) progress = 1;
+    else progress = 1 - (u - g.noise - g.resolve - g.hold) / g.dissolve;
+    return { angle: spin(u / GENERATE_CYCLE), progress, frame: Math.floor(t * NOISE_FPS) };
+  }
+
+  return { LOOP, REST_ANGLE, SWAY_CENTER, TURN_PERIOD, NOISE_FPS, GENERATE_CYCLE, loopFrequency, turn, sway, spin, generate, reveal, revealEase, smooth, hash };
 });
