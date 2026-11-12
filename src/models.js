@@ -257,15 +257,15 @@
       return d;
     },
 
-    "git-branch": (x, y, z) =>
-      union(
-        sphere(x + 0.35, y + 0.65, z, 0.17),
-        sphere(x + 0.35, y - 0.62, z, 0.17),
-        sphere(x - 0.42, y - 0.22, z, 0.17),
-        capsule(x, y, z, -0.35, -0.65, -0.35, 0.62, 0.07),
-        capsule(x, y, z, -0.35, -0.3, 0.42, -0.02, 0.07),
-        capsule(x, y, z, 0.42, -0.02, 0.42, 0.22, 0.07),
-      ),
+    // A branch diagram: two commits on a main line, and a branch curving off to a third.
+    // Ring nodes and a gap-free arc keep the fork readable at icon size.
+    "git-branch": (x, y, z) => {
+      const ring = (cx, cy) => torusZ(x - cx, y - cy, z, 0.19, 0.075);
+      const main = capsule(x, y, z, -0.4, -0.56, -0.4, 0.56, 0.08);
+      // Quarter arc from the main line (-0.4, -0.3) up to under the branch node (0.42, 0.52).
+      const arc = intersect(torusZ(x - 0.42, y + 0.3, z, 0.82, 0.08), roundBox(x + 0.01, y - 0.11, z, 0.41, 0.41, 1, 0));
+      return union(ring(-0.4, 0.75), ring(-0.4, -0.75), ring(0.42, 0.71), main, arc);
+    },
 
     clapperboard: (x, y, z) => {
       let board = roundBox(x, y + 0.15, z, 0.72, 0.5, 0.1, 0.06);

@@ -112,8 +112,8 @@
     "readsAs": "offset flat sheets"
   },
   "git-branch": {
-    "depicts": "A branching path",
-    "readsAs": "nodes joined by a line that forks"
+    "depicts": "A branch diagram",
+    "readsAs": "two ring nodes on a main line, with an arc curving off to a third"
   },
   "clapperboard": {
     "depicts": "A film clapperboard",
