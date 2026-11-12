@@ -157,7 +157,7 @@
   },
   "phone-mockup": {
     "depicts": "A phone",
-    "readsAs": "a tall rounded slab with a screen"
+    "readsAs": "a tall rounded frame around a screen with a grid of app tiles and a speaker slot"
   },
   "screen-record": {
     "depicts": "Screen recording",
@@ -173,11 +173,11 @@
   },
   "handheld-console": {
     "depicts": "A handheld game console",
-    "readsAs": "a slab with a screen, a cross and buttons"
+    "readsAs": "one rounded body with a screen, a cross pad and two buttons"
   },
   "butterfly": {
     "depicts": "A butterfly",
-    "readsAs": "two pairs of wings around a body"
+    "readsAs": "four separate wings, a body and two antennae"
   },
   "paper-plane": {
     "depicts": "A paper plane",

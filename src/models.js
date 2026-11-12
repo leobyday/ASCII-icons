@@ -329,11 +329,13 @@
         cylinderY(x, y + 0.36, z, 0.17, 0.46),
       ),
 
-    "phone-mockup": (x, y, z) =>
-      union(
-        subtract(roundBox(x, y, z, 0.44, 0.84, 0.08, 0.13), roundBox(x, y, z + 0.1, 0.37, 0.76, 0.03, 0.09)),
-        roundBox(x, y - 0.68, z + 0.07, 0.1, 0.025, 0.03, 0.02),
-      ),
+    // A phone: a thick bezel framing a deep screen, a speaker slot, and a 2 x 3 grid of app tiles.
+    "phone-mockup": (x, y, z) => {
+      const body = subtract(roundBox(x, y, z, 0.46, 0.86, 0.1, 0.16), roundBox(x, y + 0.02, z + 0.12, 0.36, 0.72, 0.06, 0.08));
+      const speaker = roundBox(x, y - 0.79, z + 0.1, 0.12, 0.025, 0.03, 0.02);
+      const tile = (cx, cy) => roundBox(x - cx, y - cy, z + 0.04, 0.11, 0.11, 0.04, 0.04);
+      return union(body, speaker, tile(-0.16, 0.42), tile(0.16, 0.42), tile(-0.16, 0.1), tile(0.16, 0.1), tile(-0.16, -0.22), tile(0.16, -0.22));
+    },
 
     "screen-record": (x, y, z) => union(monitor(x, y, z), sphere(x, y - 0.12, z + 0.02, 0.22)),
 
@@ -352,22 +354,25 @@
       return union(band, ellipsoid(abs(x) - 0.64, y + 0.32, z, 0.18, 0.32, 0.25));
     },
 
-    "handheld-console": (x, y, z) =>
-      union(
-        subtract(roundBox(x, y, z, 0.56, 0.4, 0.08, 0.04), roundBox(x, y, z + 0.1, 0.48, 0.32, 0.03, 0.02)),
-        roundBox(abs(x) - 0.74, y, z, 0.17, 0.4, 0.11, 0.15),
-        sphere(x + 0.74, y - 0.15, z + 0.12, 0.08),
-        sphere(x - 0.74, y - 0.1, z + 0.11, 0.05),
-        sphere(x - 0.74, y + 0.12, z + 0.11, 0.05),
-      ),
+    // A generic handheld game console: one rounded body, a recessed screen, a cross pad and two buttons.
+    "handheld-console": (x, y, z) => {
+      const body = subtract(roundBox(x, y, z, 0.9, 0.5, 0.1, 0.22), roundBox(x, y - 0.04, z + 0.12, 0.36, 0.28, 0.06, 0.04));
+      const pad = union(roundBox(x + 0.6, y, z + 0.12, 0.18, 0.065, 0.07, 0.02), roundBox(x + 0.6, y, z + 0.12, 0.065, 0.18, 0.07, 0.02));
+      const buttons = union(sphere(x - 0.56, y + 0.12, z + 0.12, 0.11), sphere(x - 0.74, y - 0.1, z + 0.12, 0.11));
+      return union(body, pad, buttons);
+    },
 
+    // A butterfly: four separate wing lobes (gaps keep them apart at icon size), a body and two antennae.
     butterfly: (x, y, z) => {
       const ax = abs(x);
-      return union(
-        ellipsoid(ax - 0.42, y - 0.22, z, 0.38, 0.34, 0.05),
-        ellipsoid(ax - 0.32, y + 0.34, z, 0.27, 0.24, 0.05),
-        capsule(x, y, z, 0, -0.55, 0, 0.5, 0.08),
-      );
+      const [uu, uv] = rotate(ax - 0.4, y - 0.26, -0.45);
+      const [lu, lv] = rotate(ax - 0.3, y + 0.38, 0.35);
+      const upper = ellipsoid(uu, uv, z, 0.36, 0.27, 0.09);
+      const lower = ellipsoid(lu, lv, z, 0.22, 0.19, 0.09);
+      const wings = subtract(union(upper, lower), roundBox(x, y + 0.02, z, 1, 0.035, 1, 0)); // gap between upper and lower
+      const body = capsule(x, y, z, 0, -0.5, 0, 0.42, 0.075);
+      const antennae = union(capsule(ax, y, z, 0.04, 0.45, 0.24, 0.78, 0.035), sphere(ax - 0.25, y - 0.8, z, 0.06));
+      return union(subtract(wings, cylinderY(x, y, z, 0.12, 1)), body, antennae);
     },
 
     "paper-plane": (x, y, z) => {

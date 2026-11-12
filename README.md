@@ -18,8 +18,8 @@ Every icon comes in two treatments: the same 3D model on a fine or a coarse grid
 
 | Treatment | Grid | Looks like |
 | --- | --- | --- |
-| **3D forward** ([`icons/3d/`](icons/3d)) | 50 × 30 characters | The shading reads as a solid object. The default. |
-| **Character forward** ([`icons/character/`](icons/character)) | 26 × 15 characters | Bigger characters you read as type. |
+| **3D forward** ([`icons/3d/`](icons/3d)) | 50 × 30 characters | The shading reads as a solid object. The default, and the one to use as app icons: it stays clear at Dock size. |
+| **Character forward** ([`icons/character/`](icons/character)) | 26 × 15 characters | Bigger characters you read as type. A stylized look for sizes of about 120 px and up. |
 
 | Folder (in each treatment) | What's in it |
 | --- | --- |

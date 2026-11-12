@@ -87,10 +87,10 @@ Density is the one thing people choose. It's the number of characters across the
 
 | Treatment | Grid | Reads as | Use for |
 | --- | --- | --- | --- |
-| **3D forward** (`3d`, the default) | 50 × 30 | Solid, shaded form; the characters become texture | Hero shots, large tiles, marketing, anything 180 px and up |
-| **Character forward** (`character`) | 26 × 15 | Type: you read the individual characters | Home screens, grids, dense UI, anything under about 120 px |
+| **3D forward** (`3d`, the default) | 50 × 30 | Solid, shaded form; the characters become texture | Everything by default, and always for app icons at Dock and home-screen sizes: at 64 px the shading blurs into a clear silhouette |
+| **Character forward** (`character`) | 26 × 15 | Type: you read the individual characters | A deliberate, more stylized look, at about 120 px and up where the characters are big enough to read |
 
-Set it with `{ treatment: "character" }` in `render`, `--treatment character` in the CLI, `animate.py` and `build.py`. The art always spans the same width of the tile; only the character count changes. Characters need about 5 px of height to look sharp: below that, choose character forward or a bigger icon.
+Set it with `{ treatment: "character" }` in `render`, `--treatment character` in the CLI, `animate.py` and `build.py`. The art always spans the same width of the tile; only the character count changes. Below about 120 px, character forward breaks up into sparse characters and stops reading as an object, so use 3D forward there. Check every icon at its real size (64 px for the Dock) before calling it done.
 
 ### Color
 

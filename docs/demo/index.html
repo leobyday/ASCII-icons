@@ -47,7 +47,7 @@
     padding: 0; border: 0; background: none; color: inherit; font: inherit; font-size: 11px; cursor: pointer;
   }
   .grid .tile { width: 84px; height: 84px; border-radius: 20px; }
-  .grid .tile pre { font-size: 4.15px; line-height: 4.15px; }
+  .grid .tile pre { font-size: 2.16px; line-height: 2.16px; }
   .grid button[aria-pressed="true"] .tile { outline: 2px solid var(--ink); outline-offset: 4px; }
   .grid button:focus-visible .tile { outline: 2px dashed var(--ink); outline-offset: 4px; }
 </style>
@@ -103,7 +103,7 @@
     tile.className = "tile";
     const art = document.createElement("pre");
     art.setAttribute("aria-hidden", "true");
-    art.textContent = ASCII3D.render(name, { treatment: "character" }); // small tiles read best with big characters
+    art.textContent = ASCII3D.render(name); // 3D forward: small tiles read best as solid silhouettes
     tile.appendChild(art);
     const label = document.createElement("span");
     label.textContent = name;
